@@ -14,8 +14,10 @@ const createCounty = (knex, county) => {
       return obj.county_code == county.code
     });
 
+    // console.log(districts)
+
     districts.forEach(district => {
-      district.county_id = countyID;
+      district.county_id = countyID[0];
       districtPromises.push(createDistrict(knex, district))
     });
 
@@ -34,28 +36,35 @@ const createDistrict = (knex, district) => {
     let schoolPromises = [];
 
     let schools = schoolData.filter(obj => {
-      return obj.district_code == districtID
+      return obj.district_code == district.district_code
     });
 
     schools.forEach(school => {
-      school.district_id = districtID;
+      school.district_id = districtID[0];
       schoolPromises.push(createSchool(knex, school));
     });
 
     return Promise.all(schoolPromises);
   })
-  .catch(error => console.log(`Error seeding data: ${error}`));
+  .catch(error => console.log(`Error seeding district data: ${error}`));
 };
 
 const createSchool = (knex, school) => {
+  console.log(parseFloat(school.student_count), parseFloat(school.teacher_count), parseFloat(school.pupil_teacher_ratio))
+
+  let student_c = parseFloat(school.student_count)
+  let teacher_c = parseFloat(school.teacher_count)
+  let student_teacher_r = parseFloat(school.pupil_teacher_ratio)
+
   return knex('schools').insert({
     name: school.school_name,
     school_code: school.school_code,
-    student_count: school.student_count,
-    teacher_count: school.teacher_count,
-    student_teacher_ratio: school.pupil_teacher_ratio,
-    district_id: school.district_id,
+    student_count: student_c,
+    teacher_count: teacher_c,
+    student_teacher_ratio: student_teacher_r,
+    district_id: school.district_id
   })
+  .catch(error => console.log(`Error seeding school data: ${error}`));
 };
 
 exports.seed = function(knex, Promise) {

@@ -19,11 +19,11 @@ exports.up = function(knex, Promise) {
     }),
     knex.schema.createTable('schools', function(table) {
       table.increments('id').primary();
-      table.string('name').unique();
+      table.string('name');
       table.string('school_code').unique();
-      table.integer('student_count');
-      table.integer('teacher_count');
-      table.integer('student_teacher_ratio');
+      table.float('student_count');
+      table.float('teacher_count');
+      table.float('student_teacher_ratio');
       table.integer('district_id').unsigned();
       table.foreign('district_id').references('districts.id');
 
