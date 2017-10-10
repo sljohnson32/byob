@@ -1,4 +1,6 @@
-const schoolData = require('./data/BYOB_data');
+const schoolData = require('./data/BYOB_schools_data');
+const countyData = require('./data/BYOB_counties_data');
+const districtData = require('./data/BYOB_districts_data');
 
 exports.seed = function(knex, Promise) {
   return knex('schools').del()
