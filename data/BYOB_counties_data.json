@@ -1,0 +1,262 @@
+[
+  {
+    "County Code": "1",
+    "County Name": "ADAMS"
+  },
+  {
+    "County Code": "2",
+    "County Name": "ALAMOSA"
+  },
+  {
+    "County Code": "3",
+    "County Name": "ARAPAHOE"
+  },
+  {
+    "County Code": "4",
+    "County Name": "ARCHULETA"
+  },
+  {
+    "County Code": "5",
+    "County Name": "BACA"
+  },
+  {
+    "County Code": "6",
+    "County Name": "BENT"
+  },
+  {
+    "County Code": "7",
+    "County Name": "BOULDER"
+  },
+  {
+    "County Code": "8",
+    "County Name": "CHAFFEE"
+  },
+  {
+    "County Code": "9",
+    "County Name": "CHEYENNE"
+  },
+  {
+    "County Code": "10",
+    "County Name": "CLEAR CREEK"
+  },
+  {
+    "County Code": "11",
+    "County Name": "CONEJOS"
+  },
+  {
+    "County Code": "12",
+    "County Name": "COSTILLA"
+  },
+  {
+    "County Code": "13",
+    "County Name": "CROWLEY"
+  },
+  {
+    "County Code": "14",
+    "County Name": "CUSTER"
+  },
+  {
+    "County Code": "15",
+    "County Name": "DELTA"
+  },
+  {
+    "County Code": "16",
+    "County Name": "DENVER"
+  },
+  {
+    "County Code": "17",
+    "County Name": "DOLORES"
+  },
+  {
+    "County Code": "18",
+    "County Name": "DOUGLAS"
+  },
+  {
+    "County Code": "19",
+    "County Name": "EAGLE"
+  },
+  {
+    "County Code": "20",
+    "County Name": "ELBERT"
+  },
+  {
+    "County Code": "21",
+    "County Name": "EL PASO"
+  },
+  {
+    "County Code": "22",
+    "County Name": "FREMONT"
+  },
+  {
+    "County Code": "23",
+    "County Name": "GARFIELD"
+  },
+  {
+    "County Code": "24",
+    "County Name": "GILPIN"
+  },
+  {
+    "County Code": "25",
+    "County Name": "GRAND"
+  },
+  {
+    "County Code": "26",
+    "County Name": "GUNNISON"
+  },
+  {
+    "County Code": "27",
+    "County Name": "HINSDALE"
+  },
+  {
+    "County Code": "28",
+    "County Name": "HUERFANO"
+  },
+  {
+    "County Code": "29",
+    "County Name": "JACKSON"
+  },
+  {
+    "County Code": "30",
+    "County Name": "JEFFERSON"
+  },
+  {
+    "County Code": "31",
+    "County Name": "KIOWA"
+  },
+  {
+    "County Code": "32",
+    "County Name": "KIT CARSON"
+  },
+  {
+    "County Code": "33",
+    "County Name": "LAKE"
+  },
+  {
+    "County Code": "34",
+    "County Name": "LA PLATA"
+  },
+  {
+    "County Code": "35",
+    "County Name": "LARIMER"
+  },
+  {
+    "County Code": "36",
+    "County Name": "LAS ANIMAS"
+  },
+  {
+    "County Code": "37",
+    "County Name": "LINCOLN"
+  },
+  {
+    "County Code": "38",
+    "County Name": "LOGAN"
+  },
+  {
+    "County Code": "39",
+    "County Name": "MESA"
+  },
+  {
+    "County Code": "40",
+    "County Name": "MINERAL"
+  },
+  {
+    "County Code": "41",
+    "County Name": "MOFFAT"
+  },
+  {
+    "County Code": "42",
+    "County Name": "MONTEZUMA"
+  },
+  {
+    "County Code": "43",
+    "County Name": "MONTROSE"
+  },
+  {
+    "County Code": "44",
+    "County Name": "MORGAN"
+  },
+  {
+    "County Code": "45",
+    "County Name": "OTERO"
+  },
+  {
+    "County Code": "46",
+    "County Name": "OURAY"
+  },
+  {
+    "County Code": "47",
+    "County Name": "PARK"
+  },
+  {
+    "County Code": "48",
+    "County Name": "PHILLIPS"
+  },
+  {
+    "County Code": "49",
+    "County Name": "PITKIN"
+  },
+  {
+    "County Code": "50",
+    "County Name": "PROWERS"
+  },
+  {
+    "County Code": "51",
+    "County Name": "PUEBLO"
+  },
+  {
+    "County Code": "52",
+    "County Name": "RIO BLANCO"
+  },
+  {
+    "County Code": "53",
+    "County Name": "RIO GRANDE"
+  },
+  {
+    "County Code": "54",
+    "County Name": "ROUTT"
+  },
+  {
+    "County Code": "55",
+    "County Name": "SAGUACHE"
+  },
+  {
+    "County Code": "56",
+    "County Name": "SAN JUAN"
+  },
+  {
+    "County Code": "57",
+    "County Name": "SAN MIGUEL"
+  },
+  {
+    "County Code": "58",
+    "County Name": "SEDGWICK"
+  },
+  {
+    "County Code": "59",
+    "County Name": "SUMMIT"
+  },
+  {
+    "County Code": "60",
+    "County Name": "TELLER"
+  },
+  {
+    "County Code": "61",
+    "County Name": "WASHINGTON"
+  },
+  {
+    "County Code": "62",
+    "County Name": "WELD"
+  },
+  {
+    "County Code": "63",
+    "County Name": "YUMA"
+  },
+  {
+    "County Code": "90",
+    "County Name": "COLORADO BOCS"
+  },
+  {
+    "County Code": "98",
+    "County Name": "NONE"
+  }
+]
