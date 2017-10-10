@@ -50,7 +50,6 @@ const createDistrict = (knex, district) => {
 };
 
 const createSchool = (knex, school) => {
-  console.log(parseFloat(school.student_count), parseFloat(school.teacher_count), parseFloat(school.pupil_teacher_ratio))
 
   let student_c = parseFloat(school.student_count)
   let teacher_c = parseFloat(school.teacher_count)
