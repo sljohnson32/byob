@@ -1,8 +1,13 @@
+const schoolData = require('./data/BYOB_data');
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
+  return knex('schools').del()
+    .then(() => knex('districts').del())
+    .then(() => knex('counties').del())
+    .then(() => {
+      return Promise.all([
+
+      ])
       // Inserts seed entries
       return knex('table_name').insert([
         {id: 1, colName: 'rowValue1'},
