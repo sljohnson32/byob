@@ -4,13 +4,37 @@ const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const secretKey = process.env.secretKey || require('./secretKey');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', process.env.PORT || 3000);
-app.set('secretKey', 'BillBrasky')
+
+const checkAuth = (request, response, next) => {
+  let bodyToken = request.body.token;
+  let headerToken = request.get('authorization');
+  let paramToken = request.param.token;
+  let token = bodyToken || headerToken || paramToken;
+  let allowedAppName = 'byob';
+
+  if(!token) {
+    return response.status(403).json({ error: 'Invalid Token' })
+  }
+  jwt.verify(token, secretKey, function(error, decoded){
+    console.log('app name', decoded);
+    console.log('error?', error);
+    if(error) {
+      return response.status(403).json({ error: 'Invalid App Name1' })
+    }
+    if(decoded.appName !== allowedAppName){
+      return response.status(403).json({ error: 'Invalid App Name2' })
+    }
+  });
+  next();
+};
 
 //Client-side endpoint
 app.get('/', (request, response) => {
@@ -20,7 +44,6 @@ app.get('/', (request, response) => {
 //Authentication endpoint
 app.post('/api/v1/authentication', (request, response) => {
   let payload = request.body;
-  let key = app.get('secretKey');
   let options = { expiresIn: '1h' }
 
   for (let requiredParameter of ['email', 'appName']) {
@@ -32,7 +55,7 @@ app.post('/api/v1/authentication', (request, response) => {
   }
   if (payload.email.endsWith('@turing.io')) { payload.user = 'admin'} ;
 
-  let token = jwt.sign(payload, key, options)
+  let token = jwt.sign(payload, secretKey, options)
   return response.status(201).json(token)
 })
 
@@ -136,7 +159,7 @@ app.get('/api/v1/schools/:id', (request, response) => {
 });
 
 //posts -- not sure how we will even make a post at this point--
-app.post('/api/v1/schools', (request, response) => {
+app.post('/api/v1/schools', checkAuth, (request, response) => {
   const school = request.body;
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
@@ -156,7 +179,7 @@ app.post('/api/v1/schools', (request, response) => {
     });
 });
 
-app.post('/api/v1/districts', (request, response) => {
+app.post('/api/v1/districts', checkAuth, (request, response) => {
   const district = request.body;
 
   for (let requiredParameter of ['name', 'district_code', 'county_id']) {
@@ -177,7 +200,7 @@ app.post('/api/v1/districts', (request, response) => {
 });
 
 //put & patch schools
-app.put('/api/v1/schools/:id', (request, response) => {
+app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let school = request.body;
 
@@ -198,7 +221,7 @@ app.put('/api/v1/schools/:id', (request, response) => {
   });
 });
 
-app.patch('/api/v1/schools/:id', (request, response) => {
+app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let schoolPatch = request.body;
 
@@ -210,7 +233,7 @@ app.patch('/api/v1/schools/:id', (request, response) => {
 })
 
 //delete
-app.delete('/api/v1/schools/:id', (request, response) => {
+app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('schools').where({ id }).del()
@@ -226,7 +249,7 @@ app.delete('/api/v1/schools/:id', (request, response) => {
   })
 });
 
-app.delete('/api/v1/districts/:id', (request, response) => {
+app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('districts').where({ id }).del()
@@ -243,5 +266,5 @@ app.delete('/api/v1/districts/:id', (request, response) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+  console.log(`BYOB is running on ${app.get('port')}.`);
 });
