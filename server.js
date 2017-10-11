@@ -63,7 +63,15 @@ app.get('/api/v1/schools', (request, response) => {
 });
 
 app.get('/api/v1/districts', (request, response) => {
-  database('districts').select()
+  let { countyID } = request.query;
+
+  const checkQuery = () => {
+    if (countyID) {
+      return database('districts').where('county_id', countyID).select()
+    } else return database('districts').select()
+  }
+
+  checkQuery()
   .then((districts) => {
     response.status(200).json(districts)
   })
