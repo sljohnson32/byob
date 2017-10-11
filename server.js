@@ -168,12 +168,27 @@ app.post('/api/v1/districts', (request, response) => {
 //delete
 app.delete('/api/v1/schools/:id', (request, response) => {
   const { id } = request.params;
-  console.log('id: ', id);
 
   database('schools').where({ id }).del()
-  .then(palette => {
-    if (palette) {
-      response.sendStatus(204)
+  .then(school => {
+    if (school) {
+      response.status(202).json(`School ${id} was deleted from database`)
+    } else {
+      response.status(422).json({ error: 'Not Found' })
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+});
+
+app.delete('/api/v1/districts/:id', (request, response) => {
+  const { id } = request.params;
+
+  database('districts').where({ id }).del()
+  .then(district => {
+    if (district) {
+      response.status(202).json(`District ${id} was deleted from database`)
     } else {
       response.status(422).json({ error: 'Not Found' })
     }
