@@ -19,7 +19,19 @@ app.get('/api/v1/schools', (request, response) => {
   let ratioMin = request.param('ratioMin');
   let ratioMax = request.param('ratioMax');
 
-  if (ratioMin) {
+  console.log(ratioMin, ratioMax)
+
+  if (ratioMin && ratioMax) {
+    database('schools').where('student_teacher_ratio', '>=', ratioMin).where('student_teacher_ratio', '<=', ratioMax).select()
+    .then((schools) => {
+      response.status(200).json(schools)
+    })
+    .catch((error) => {
+      response.status(404).json({error})
+    });
+  }
+
+  if (ratioMin && !ratioMax) {
     database('schools').where('student_teacher_ratio', '>=', ratioMin).select()
     .then((schools) => {
       response.status(200).json(schools)
@@ -29,7 +41,7 @@ app.get('/api/v1/schools', (request, response) => {
     });
   }
 
-  if (ratioMax) {
+  if (ratioMax && ratioMin) {
     database('schools').where('student_teacher_ratio', '<=', ratioMax).select()
     .then((schools) => {
       response.status(200).json(schools)
