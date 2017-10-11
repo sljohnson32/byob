@@ -128,11 +128,11 @@ app.get('/api/v1/schools/:id', (request, response) => {
 app.post('/api/v1/schools', (request, response) => {
   const school = request.body;
 
-  for (let requiredParameter of ['name', 'schoolCode', 'studentCount', 'teacherCount', 'studentTeacherRatio', 'districtId']) {
+  for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { title: <String>, author: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <String>, techer_count: <String>, studetn_teacher_ratio: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
@@ -148,11 +148,11 @@ app.post('/api/v1/schools', (request, response) => {
 app.post('/api/v1/districts', (request, response) => {
   const district = request.body;
 
-  for (let requiredParameter of ['name', 'disctrictCode', 'countyId']) {
+  for (let requiredParameter of ['name', 'district_code', 'county_id']) {
     if (!district[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { title: <String>, author: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { name: <String>, district_code: <String>, county_id: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
@@ -168,12 +168,27 @@ app.post('/api/v1/districts', (request, response) => {
 //delete
 app.delete('/api/v1/schools/:id', (request, response) => {
   const { id } = request.params;
-  console.log('id: ', id);
 
   database('schools').where({ id }).del()
-  .then(palette => {
-    if (palette) {
-      response.sendStatus(204)
+  .then(school => {
+    if (school) {
+      response.status(202).json(`School ${id} was deleted from database`)
+    } else {
+      response.status(422).json({ error: 'Not Found' })
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+});
+
+app.delete('/api/v1/districts/:id', (request, response) => {
+  const { id } = request.params;
+
+  database('districts').where({ id }).del()
+  .then(district => {
+    if (district) {
+      response.status(202).json(`District ${id} was deleted from database`)
     } else {
       response.status(422).json({ error: 'Not Found' })
     }
