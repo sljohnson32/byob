@@ -178,6 +178,39 @@ app.post('/api/v1/districts', (request, response) => {
     });
 });
 
+//put & patch schools
+app.put('/api/v1/schools/:id', (request, response) => {
+  let { id } = request.params;
+  let school = request.body;
+
+  for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
+    if (!school[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <Integer>, teacher_count: <Integer>, student_teacher_ratio: <Integer>, district_id: <Integer> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+
+  database('schools').where({ id }).update(school, "id")
+  .then(() => {
+    response.status(201).json({ id })
+  })
+  .catch(error => {
+    response.status(500).json(error);
+  });
+});
+
+app.patch('/api/v1/schools/:id', (request, response) => {
+  let { id } = request.params;
+  let schoolPatch = request.body;
+
+  database('schools').where('id', id).update(schoolPatch, '*')
+  .then(() => {
+    response.status(201).json(`School with id:${id} was updated.`)
+  })
+  .catch(error => response.status(500).json(error))
+})
+
 //delete
 app.delete('/api/v1/schools/:id', (request, response) => {
   const { id } = request.params;
