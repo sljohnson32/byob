@@ -4,17 +4,39 @@ const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+const jwt = require('jsonwebtoken')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', process.env.PORT || 3000);
-app.locals.title = 'School Finder';
+app.set('secretKey', 'BillBrasky')
 
+//Client-side endpoint
 app.get('/', (request, response) => {
   response.send('School/s in session sucka!');
 });
 
+//Authentication endpoint
+app.post('/api/v1/authentication', (request, response) => {
+  let payload = request.body;
+  let key = app.get('secretKey');
+  let options = { expiresIn: '1h' }
+
+  for (let requiredParameter of ['email', 'appName']) {
+    if (!request.body[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { email: <String>, appName: <String> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+  if (payload.email.endsWith('@turing.io')) { payload.user = 'admin'} ;
+
+  let token = jwt.sign(payload, key, options)
+  return response.status(201).json(token)
+})
+
+//API endpoints
 app.get('/api/v1/schools', (request, response) => {
   let ratioMin = request.query.ratioMin;
   let ratioMax = request.query.ratioMax;
