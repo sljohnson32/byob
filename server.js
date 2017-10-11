@@ -12,6 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 app.set('secretKey', 'BillBrasky')
 
+
+
 //Client-side endpoint
 app.get('/', (request, response) => {
   response.send('School/s in session sucka!');
