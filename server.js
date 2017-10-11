@@ -16,13 +16,38 @@ app.get('/', (request, response) => {
 });
 
 app.get('/api/v1/schools', (request, response) => {
-  database('schools').select()
-  .then((schools) => {
-    response.status(200).json(schools)
-  })
-  .catch((error) => {
-    response.status(404).json({error})
-  });
+  let ratioMin = request.param('ratioMin');
+  let ratioMax = request.param('ratioMax');
+
+  if (ratioMin) {
+    database('schools').where('student_teacher_ratio', '>=', ratioMin).select()
+    .then((schools) => {
+      response.status(200).json(schools)
+    })
+    .catch((error) => {
+      response.status(404).json({error})
+    });
+  }
+
+  if (ratioMax) {
+    database('schools').where('student_teacher_ratio', '<=', ratioMax).select()
+    .then((schools) => {
+      response.status(200).json(schools)
+    })
+    .catch((error) => {
+      response.status(404).json({error})
+    });
+  }
+
+  if (!ratioMin && !ratioMax) {
+    database('schools').select()
+    .then((schools) => {
+      response.status(200).json(schools)
+    })
+    .catch((error) => {
+      response.status(404).json({error})
+    });
+  }
 });
 
 app.get('/api/v1/districts', (request, response) => {
@@ -88,10 +113,10 @@ app.get('/api/v1/districts/:name', (request, response) => {
 //   });
 // });
 
-app.get('/api/v1/schools/:name', (request, response) => {
+app.get('/api/v1/schools/:id', (request, response) => {
   const name = request.params.name.toString().toUpperCase();
 
-  database('schools').where('name',  name).select()
+  database('schools').where('id',  name).select()
   .then((county) => {
     response.status(200).json(county)
   })
@@ -101,8 +126,6 @@ app.get('/api/v1/schools/:name', (request, response) => {
     })
   });
 });
-
-
 
 //posts -- not sure how we will even make a post at this point--
 app.post('/api/v1/schools', (request, response) => {
