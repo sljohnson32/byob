@@ -74,19 +74,19 @@ app.get('/api/v1/districts/:name', (request, response) => {
   });
 });
 
-//notworking yet
-// app.get('/api/v1/districts/:code', (request, response) => {
-//   const code = request.params.code;
-//   database('districts').where('district_code', code).select()
-//   .then((county) => {
-//     response.status(200).json(county)
-//   })
-//   .catch((error) => {
-//     response.status(404).json({
-//       error: `Could not find county with code ${request.params.code}`
-//     })
-//   });
-// });
+// notworking yet
+app.get('/api/v1/districts/:code', (request, response) => {
+  const code = request.params.code;
+  database('districts').where('district_code', code).select()
+  .then((county) => {
+    response.status(200).json(county)
+  })
+  .catch((error) => {
+    response.status(404).json({
+      error: `Could not find county with code ${request.params.code}`
+    })
+  });
+});
 
 app.get('/api/v1/schools/:name', (request, response) => {
   const name = request.params.name.toString().toUpperCase();
