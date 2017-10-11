@@ -82,59 +82,44 @@ app.get('/api/v1/counties', (request, response) => {
   });
 });
 
-app.get('/api/v1/counties/:name', (request, response) => {
-  const name = request.params.name.toString().toUpperCase()
-  console.log('county name', name);
+app.get('/api/v1/counties/:id', (request, response) => {
+  const id = request.params.id;
 
-  database('counties').where('name',  name).select()
+  database('counties').where('id', id).select()
   .then((county) => {
     response.status(200).json(county)
   })
   .catch((error) => {
     response.status(404).json({
-      error: `Could not find county with name ${request.params.name}`
+      error: `Could not find county with id ${request.params.id}`
     })
   });
 });
 
-app.get('/api/v1/districts/:name', (request, response) => {
-  const name = request.params.name.toString().toUpperCase();
+app.get('/api/v1/districts/:id', (request, response) => {
+  const id = request.params.id;
 
-  database('districts').where('name',  name).select()
+  database('districts').where('id', id).select()
   .then((county) => {
     response.status(200).json(county)
   })
   .catch((error) => {
     response.status(404).json({
-      error: `Could not find county with name ${request.params.name}`
+      error: `Could not find county with id ${request.params.id}`
     })
   });
 });
-
-//notworking yet
-// app.get('/api/v1/districts/:code', (request, response) => {
-//   const code = request.params.code;
-//   database('districts').where('district_code', code).select()
-//   .then((county) => {
-//     response.status(200).json(county)
-//   })
-//   .catch((error) => {
-//     response.status(404).json({
-//       error: `Could not find county with code ${request.params.code}`
-//     })
-//   });
-// });
 
 app.get('/api/v1/schools/:id', (request, response) => {
-  const name = request.params.name.toString().toUpperCase();
+  const id = request.params.id;
 
-  database('schools').where('id',  name).select()
+  database('schools').where('id', id).select()
   .then((county) => {
     response.status(200).json(county)
   })
   .catch((error) => {
     response.status(404).json({
-      error: `Could not find county with name ${request.params.name}`
+      error: `Could not find county with id ${request.params.id}`
     })
   });
 });
@@ -172,26 +157,6 @@ app.post('/api/v1/districts', (request, response) => {
   }
 
   database('districts').insert(district, 'id')
-    .then(school => {
-      response.status(201).json({ id: school[0] })
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
-app.post('/api/v1/counties', (request, response) => {
-  const county = request.body;
-
-  for (let requiredParameter of ['name', 'countyCode']) {
-    if (!county[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { title: <String>, author: <String> }. You're missing a "${requiredParameter}" property.` });
-    }
-  }
-
-  database('counties').insert(county, 'id')
     .then(school => {
       response.status(201).json({ id: school[0] })
     })
