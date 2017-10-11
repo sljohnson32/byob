@@ -19,47 +19,28 @@ app.get('/api/v1/schools', (request, response) => {
   let ratioMin = request.query.ratioMin;
   let ratioMax = request.query.ratioMax;
 
-  console.log(ratioMin, ratioMax)
+  const checkQuery = () => {
+    if (ratioMin && ratioMax) {
+      return database('schools').where('student_teacher_ratio', '>=', ratioMin).where('student_teacher_ratio', '<=', ratioMax).select()
+    }
+    if (ratioMin && !ratioMax) {
+      return database('schools').where('student_teacher_ratio', '>=', ratioMin).select()
+    }
+    if (!ratioMin && ratioMax) {
+      return database('schools').where('student_teacher_ratio', '<=', ratioMax).select()
+    }
+    if (!ratioMin && !ratioMax) {
+      return database('schools').select()
+    }
+  }
 
-  if (ratioMin && ratioMax) {
-    database('schools').where('student_teacher_ratio', '>=', ratioMin).where('student_teacher_ratio', '<=', ratioMax).select()
+  checkQuery()
     .then((schools) => {
       return response.status(200).json(schools)
     })
     .catch((error) => {
       response.status(404).json({error})
     });
-  }
-
-  if (ratioMin && !ratioMax) {
-    database('schools').where('student_teacher_ratio', '>=', ratioMin).select()
-    .then((schools) => {
-      return response.status(200).json(schools)
-    })
-    .catch((error) => {
-      response.status(404).json({error})
-    });
-  }
-
-  if (ratioMax && !ratioMin) {
-    database('schools').where('student_teacher_ratio', '<=', ratioMax).select()
-    .then((schools) => {
-      return response.status(200).json(schools)
-    })
-    .catch((error) => {
-      response.status(404).json({error})
-    });
-  }
-
-  if (!ratioMin && !ratioMax) {
-    database('schools').select()
-    .then((schools) => {
-      return response.status(200).json(schools)
-    })
-    .catch((error) => {
-      response.status(404).json({error})
-    });
-  }
 });
 
 app.get('/api/v1/districts', (request, response) => {
