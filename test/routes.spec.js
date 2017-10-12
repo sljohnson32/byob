@@ -285,7 +285,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('should not update a school if you lack the proper authorization', (done) => {
+    it('should respond with a 403 if you lack the proper authorization', (done) => {
       chai.request(server)
       .put('/api/v1/schools/2')
       .set('Authorization', regToken)
@@ -321,6 +321,19 @@ describe('API Routes', () => {
         done();
       })
     });
+
+    it('should respond with a 403 if you lack the proper authorization', () => {
+      chai.request(server)
+      .patch('/api/v1/schools/2')
+      .set('Authorization', regToken)
+      .send({
+        student_count: '200'
+      })
+      .end((error, response) => {
+        response.should.have.status(403)
+      });
+    });
+
   });
 
 
