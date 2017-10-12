@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
+// app.locals.title = 'BYOB';
 
 const checkAuth = (request, response, next) => {
   let bodyToken = request.body.token;
@@ -288,3 +289,5 @@ app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`BYOB is running on ${app.get('port')}.`);
 });
+
+module.exports = app;
