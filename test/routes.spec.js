@@ -53,9 +53,11 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
 
   before((done) => {
-    setJWTs()
+    setJWTs();
     database.migrate.latest()
-    .then(() => done())
+    .then(() => {
+      done()
+    })
     .catch((error) => {
       console.log('error1', error);
     });

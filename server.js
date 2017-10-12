@@ -162,7 +162,6 @@ app.get('/api/v1/schools/:id', (request, response) => {
 //posts -- not sure how we will even make a post at this point--
 app.post('/api/v1/schools', checkAuth, (request, response) => {
   const school = request.body;
-  let { admin } = request
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
