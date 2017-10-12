@@ -26,8 +26,6 @@ const checkAuth = (request, response, next) => {
     return response.status(403).json({ error: 'Invalid Token' })
   }
   jwt.verify(token, secretKey, function(error, decoded){
-    console.log('app name', decoded);
-    console.log('error?', error);
     if (error) {
       return response.status(403).json({ error: 'Invalid App Name1' })
     }
