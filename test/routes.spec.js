@@ -169,6 +169,15 @@ describe('API Routes', () => {
     });
   });
 
+  it('should return a 404 for a route that does not exist', (done) => {
+    chai.request(server)
+    .get('/ap1/v1/rickandmorty')
+    .end((error, response) => {
+      response.should.have.status(404);
+      done();
+    });
+  });
+
   it('should return a 404 for a school id that does not exist', (done) => {
     chai.request(server)
     .get('/ap1/v1/schools/4590001')
@@ -255,8 +264,64 @@ describe('API Routes', () => {
 
   });
   //put
+  describe('PUT to API', () => {
+    it('should be able to edit an existing school', (done) => {
+      chai.request(server)
+      .put('/api/v1/schools/2')
+      .set('Authorization', adminToken)
+      .send({
+        name: 'ALAMOSA HIGH SCHOOL',
+        school_code: '118',
+        student_count: '600',
+        teacher_count: '30',
+        student_teacher_ratio: '20',
+        district_id: '1'
+      })
+      .end((error, response) => {
+        response.should.have.status(201)
+        response.body.should.have.property('id')
+        response.body.id.should.equal('2');
+        done();
+      });
+    });
+
+    it('should not update a school if you lack the proper authorization', (done) => {
+      chai.request(server)
+      .put('/api/v1/schools/2')
+      .set('Authorization', regToken)
+      .send({
+        name: 'ALAMOSA HIGH SCHOOL',
+        school_code: '118',
+        student_count: '600',
+        teacher_count: '30',
+        student_teacher_ratio: '20',
+        district_id: '1'
+      })
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+    });
+
+  });
 
   //patch
+  describe('PATCH to API', () => {
+
+    it('should update one specific property of a school', (done) => {
+      chai.request(server)
+      .patch('/api/v1/schools/2')
+      .set('Authorization', adminToken)
+      .send({
+        student_count: '200'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.equal('School with id:2 was updated.');
+        done();
+      })
+    });
+  });
 
 
 
