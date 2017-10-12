@@ -15,33 +15,18 @@ let regToken;
 chai.use(chaiHttp);
 
 //trying to figure out how to set JWT in the before
-// const setJWTs = () => {
-//   chai.request(server).fetch('/api/v1/authentication', {
-//     method: 'POST',
-//     body: JSON.stringify(
-//       {
-//         email: 'sam@turing.io',
-//         appName: 'byob',
-//       }
-//     )
-//     .then(response => {
-//       adminToken = response.json()
-//     })
-//   })
-//   window.fetch('/api/v1/authentication', {
-//     method: 'POST',
-//     body: JSON.stringify(
-//       {
-//         email: 'sam@rickandmorty.com',
-//         appName: 'byob',
-//       }
-//     )
-//     .then(response => {
-//       regToken = response.json()
-//     })
-//   })
-// };
+const setJWTs = () => {
+  chai.request(server)
+  .post('/api/v1/authentication')
+  .send({ email: 'sam@turing.io', appName: 'byob' })
+  .end((error, response) => adminToken = JSON.parse(response.text))
 
+
+  chai.request(server)
+  .post('/api/v1/authentication')
+  .send({ email: 'sam@ricknmorty.com', appName: 'byob' })
+  .end((error, response) => regToken = JSON.parse(response.text))
+}
 
 describe('Client Routes', () => {
   it('should return some text from our default page', (done) => {
@@ -68,12 +53,11 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
 
   before((done) => {
-    // setJWTs()
-    console.log('tokens', adminToken, regToken);
+    setJWTs()
     database.migrate.latest()
     .then(() => done())
     .catch((error) => {
-      console.log(error);
+      console.log('error1', error);
     });
   });
 
@@ -81,7 +65,7 @@ describe('API Routes', () => {
     database.seed.run()
     .then(() => done())
     .catch((error) => {
-      console.log(error);
+      console.log('error2', error);
     });
   });
 
@@ -223,13 +207,31 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.be.a('string');
-        response.body.should.equal('dan');
+        // response.body.should.equal(adminToken);
+
+        done();
       });
     });
 
   });
 
   //post
+  describe('POST to the API', () => {
+    it('should be able to add a district', (done) => {
+      chai.request(server)
+      .post('/api/v1/districts')
+      .set('Authorization', adminToken)
+      .send({
+        name: 'Denver',
+        district_code: '1234',
+        county_id: '1'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        done();
+      });
+    });
+  });
   //put
 
   //patch
