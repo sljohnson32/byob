@@ -1,6 +1,14 @@
 # byob
 DESCRIPTION
 
+Welcome to the Colorado Public Schools API!
+
+This API contains multiple end points to access data about counties, school districts, and schools in Colorado.
+
+This API follows RESTful API guidelines.
+
+This API is secured with JSON Web Tokens for user authentication and authorization.
+
 DATA AVAILABLE
 
 AUTHENTICATION
