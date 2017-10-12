@@ -216,7 +216,6 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.be.a('string');
-        // response.body.should.equal(adminToken);
 
         done();
       });
@@ -226,19 +225,29 @@ describe('API Routes', () => {
 
   //post
   describe('POST to the API', () => {
+    let districtBody = { name: 'Denver', district_code: '0034', county_id: '1' }
+    let schoolBody = { name: 'School for the Dans', school_code: '1234', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' }
 
     it('should be able to add a district', (done) => {
       chai.request(server)
       .post('/api/v1/districts')
       .set('Authorization', adminToken)
-      .send({
-        name: 'Denver',
-        district_code: '0034',
-        county_id: '1'
-      })
+      .send(districtBody)
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.have.property('id');
+        done();
+      });
+    });
+
+    it('should send a 403 status if a non-admin user tried to POST a district', (done) => {
+      chai.request(server)
+      .post('/api/v1/districts')
+      .set('Authorization', regToken)
+      .send(districtBody)
+      .end((error, response) => {
+        response.should.have.status(403);
+        response.body.error.should.equal("Admin priviledges are required to complete this action.");
         done();
       });
     });
@@ -247,17 +256,22 @@ describe('API Routes', () => {
       chai.request(server)
       .post('/api/v1/schools')
       .set('Authorization', adminToken)
-      .send({
-        name: 'School for the Dans',
-        school_code: '1234',
-        student_count: '2',
-        teacher_count: '1',
-        student_teacher_ratio: '.5',
-        district_id: '1'
-      })
+      .send(schoolBody)
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.have.property('id');
+        done();
+      });
+    });
+
+    it('should send a 403 status if a non-admin user tried to POST a school', (done) => {
+      chai.request(server)
+      .post('/api/v1/schools')
+      .set('Authorization', regToken)
+      .send(schoolBody)
+      .end((error, response) => {
+        response.should.have.status(403);
+        response.body.error.should.equal("Admin priviledges are required to complete this action.");
         done();
       });
     });
