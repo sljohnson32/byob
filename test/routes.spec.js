@@ -227,11 +227,14 @@ describe('API Routes', () => {
 
   //post
   describe('POST to the API', () => {
+    let districtBody = { name: 'Denver 2.0', district_code: '92345', county_id: '1' };
+    let schoolBody = { name: 'School for the Dans', school_code: '123334', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' };
+
     it('should be able to add a district', (done) => {
       chai.request(server)
       .post('/api/v1/districts')
       .set('Authorization', adminToken)
-      .send({ name: 'Denver 2.0', district_code: '92345', county_id: '1' })
+      .send(districtBody)
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.have.property('id');
@@ -243,7 +246,7 @@ describe('API Routes', () => {
       chai.request(server)
       .post('/api/v1/districts')
       .set('Authorization', regToken)
-      .send({ name: 'Denver 2.0', district_code: '92345', county_id: '1' })
+      .send(districtBody)
       .end((error, response) => {
         response.should.have.status(403);
         response.body.error.should.equal("Admin priviledges are required to complete this action.");
@@ -255,7 +258,7 @@ describe('API Routes', () => {
       chai.request(server)
       .post('/api/v1/schools')
       .set('Authorization', adminToken)
-      .send({ name: 'School for the Dans', school_code: '123334', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' })
+      .send(schoolBody)
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.have.property('id');
@@ -267,7 +270,7 @@ describe('API Routes', () => {
       chai.request(server)
       .post('/api/v1/schools')
       .set('Authorization', regToken)
-      .send({ name: 'School for the Dans', school_code: '123334', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' })
+      .send(schoolBody)
       .end((error, response) => {
         response.should.have.status(403);
         response.body.error.should.equal("Admin priviledges are required to complete this action.");
@@ -282,14 +285,14 @@ describe('API Routes', () => {
       chai.request(server)
       .put('/api/v1/schools/2')
       .set('Authorization', adminToken)
-      .send(JSON.stringify({
+      .send({
         name: 'ALAMOSA HIGH SCHOOL',
         school_code: '118',
         student_count: '600',
         teacher_count: '30',
         student_teacher_ratio: '20',
         district_id: '1'
-      }))
+      })
       .end((error, response) => {
         response.should.have.status(201)
         response.body.should.have.property('id')
