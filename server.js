@@ -12,11 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
-// app.locals.title = 'BYOB';
-
-const checkAdmin = ( admin, response)  => {
-
-}
 
 const checkAuth = (request, response, next) => {
   let bodyToken = request.body.token;
@@ -26,7 +21,7 @@ const checkAuth = (request, response, next) => {
   let allowedAppName = 'byob';
 
   if(!token) {
-    return response.status(403).json({ error: 'Invalid Token' })
+    return response.status(403).json({ error: "Invalid Token" })
   }
 
   jwt.verify(token, secretKey, function(error, decoded){
@@ -34,10 +29,10 @@ const checkAuth = (request, response, next) => {
       return response.status(403).json(error)
     }
     if (!decoded.admin) {
-      return response.status(403).json("Admin priviledges are required to complete this action.")
+      return response.status(403).json({ error: "Admin priviledges are required to complete this action." })
     }
     if (decoded.appName !== allowedAppName){
-      return response.status(403).json({ error: 'Invalid App' })
+      return response.status(403).json({ error: "Invalid App" })
     }
   });
   next();
@@ -247,9 +242,9 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   database('schools').where({ id }).del()
   .then(school => {
     if (school) {
-      response.status(202).json(`School ${id} was deleted from database`)
+      return response.status(202).json(`School ${id} was deleted from database`)
     } else {
-      response.status(422).json({ error: 'Not Found' })
+      return response.status(422).json({ error: 'Not Found' })
     }
   })
   .catch(error => {
@@ -263,9 +258,9 @@ app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   database('districts').where({ id }).del()
   .then(district => {
     if (district) {
-      response.status(202).json(`District ${id} was deleted from database`)
+      return response.status(202).json(`District ${id} was deleted from database`)
     } else {
-      response.status(422).json({ error: 'Not Found' })
+      return response.status(422).json({ error: 'Not Found' })
     }
   })
   .catch(error => {
