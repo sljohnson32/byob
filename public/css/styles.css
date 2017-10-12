@@ -1,0 +1,35 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  text-align: center;
+  padding: 80px;
+  background-color: #BDBDBD;
+}
+
+header {
+  text-align: center;
+  text-decoration: underline;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 40px;
+  font-weight: bolder;
+  padding: 20px 0 50px;
+}
+
+input {
+  border-radius: 5px;
+  padding-left: 10px;
+  margin: 40px 25px;
+  width: 400px;
+  height: 40px;
+  font-size: 24px;
+}
+
+button {
+  border-radius: 5px;
+  border: none;
+  margin: 40px 15px;
+  width: 180px;
+  height: 40px;
+  font-size: 20px;
+  background-color: #4CAF50;
+}
