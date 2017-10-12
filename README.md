@@ -7,7 +7,7 @@ This API contains multiple end points to access data about counties, school dist
 
 This API follows RESTful API [guidelines.](https://github.com/Microsoft/api-guidelines)
 
-This API is secured with JSON Web Tokens for user authentication and authorization.
+This API is secured with [JSON Web Tokens](https://jwt.io/) for user authentication and authorization.
 
 DATA AVAILABLE
 
