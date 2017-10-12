@@ -64,7 +64,6 @@ describe('API Routes', () => {
   });
 
   beforeEach((done) => {
-    console.log('SEEDING')
     database.seed.run()
     .then(() => done())
     .catch((error) => {
@@ -228,8 +227,8 @@ describe('API Routes', () => {
 
   //post
   describe('POST to the API', () => {
-    let districtBody = { name: 'Denver', district_code: '0034', county_id: '1' }
-    let schoolBody = { name: 'School for the Dans', school_code: '1234', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' }
+    let districtBody = { name: 'Denver', district_code: '0034', county_id: '1' };
+    let schoolBody = { name: 'School for the Dans', school_code: '1234', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' };
 
     it('should be able to add a district', (done) => {
       chai.request(server)
