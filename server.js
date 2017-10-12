@@ -24,18 +24,15 @@ const checkAuth = (request, response, next) => {
     return response.status(403).json({ error: "Invalid Token" })
   }
 
-  jwt.verify(token, secretKey, function(error, decoded){
+  jwt.verify(token, secretKey, (error, decoded) => {
     if (error) {
       return response.status(403).json(error)
-    }
-    if (!decoded.admin) {
+    } else if (!decoded.admin) {
       return response.status(403).json({ error: "Admin priviledges are required to complete this action." })
-    }
-    if (decoded.appName !== allowedAppName){
+    } else if (decoded.appName !== allowedAppName){
       return response.status(403).json({ error: "Invalid App" })
-    }
+    } else next();
   });
-  next();
 };
 
 //Client-side endpoint
@@ -234,7 +231,9 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   .then(() => {
     response.status(201).json(`School with id:${id} was updated.`)
   })
-  .catch(error => response.status(500).json(error))
+  .catch(error => {
+    response.status(500).json(error)
+  })
 })
 
 //delete
