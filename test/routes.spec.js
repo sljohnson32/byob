@@ -282,14 +282,14 @@ describe('API Routes', () => {
       chai.request(server)
       .put('/api/v1/schools/2')
       .set('Authorization', adminToken)
-      .send({
+      .send(JSON.stringify({
         name: 'ALAMOSA HIGH SCHOOL',
         school_code: '118',
         student_count: '600',
         teacher_count: '30',
         student_teacher_ratio: '20',
         district_id: '1'
-      })
+      }))
       .end((error, response) => {
         response.should.have.status(201)
         response.body.should.have.property('id')
