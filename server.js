@@ -175,6 +175,7 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
       response.status(201).json({ id: school[0] })
     })
     .catch(error => {
+      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -194,6 +195,7 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
       response.status(201).json({ id: school[0] })
     })
     .catch(error => {
+      console.log(error)
       response.status(500).json({ error });
     });
 });
