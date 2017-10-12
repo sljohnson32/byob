@@ -7,13 +7,11 @@ const database = require('knex')(configuration);
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.secretKey || require('./secretKey');
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
-// app.locals.title = 'BYOB';
 
 const checkAuth = (request, response, next) => {
   let bodyToken = request.body.token;
@@ -36,11 +34,7 @@ const checkAuth = (request, response, next) => {
   next();
 };
 
-const adminCheck = (admin, response) => {
-  if (!admin) {
-    return response.status(403).json('Admin priviledges are required to complete this action.')
-  }
-}
+
 
 //Client-side endpoint
 app.get('/', (request, response) => {
@@ -100,7 +94,9 @@ app.get('/api/v1/districts', (request, response) => {
   const checkQuery = () => {
     if (countyID) {
       return database('districts').where('county_id', countyID).select()
-    } else return database('districts').select()
+    } else {
+      return database('districts').select()
+    }
   }
 
   checkQuery()
@@ -169,7 +165,9 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
   const school = request.body;
   let { admin } = request
 
-  adminCheck(admin, response)
+  if (!admin) {
+    return response.status(403).json('Admin priviledges are required to complete this action.')
+  }
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
@@ -192,7 +190,9 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
   const district = request.body;
   let { admin } = request
 
-  adminCheck(admin, response)
+  if (!admin) {
+    return response.status(403).json('Admin priviledges are required to complete this action.')
+  }
 
   for (let requiredParameter of ['name', 'district_code', 'county_id']) {
     if (!district[requiredParameter]) {
@@ -217,8 +217,9 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   let school = request.body;
   let { admin } = request
 
-  adminCheck(admin, response)
-
+  if (!admin) {
+    return response.status(403).json('Admin priviledges are required to complete this action.')
+  }
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
       return response
@@ -241,7 +242,9 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let schoolPatch = request.body;
   let { admin } = request
 
-  adminCheck(admin, response)
+  if (!admin) {
+    return response.status(403).json('Admin priviledges are required to complete this action.')
+  }
   database('schools').where('id', id).update(schoolPatch, '*')
   .then(() => {
     response.status(201).json(`School with id:${id} was updated.`)
@@ -254,13 +257,15 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
   let { admin } = request
 
-  adminCheck(admin, response)
+  if (!admin) {
+    return response.status(403).json('Admin priviledges are required to complete this action.')
+  }
   database('schools').where({ id }).del()
   .then(school => {
     if (school) {
-      response.status(202).json(`School ${id} was deleted from database`)
+      return response.status(202).json(`School ${id} was deleted from database`)
     } else {
-      response.status(422).json({ error: 'Not Found' })
+      return response.status(422).json({ error: 'Not Found' })
     }
   })
   .catch(error => {
@@ -274,9 +279,9 @@ app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   database('districts').where({ id }).del()
   .then(district => {
     if (district) {
-      response.status(202).json(`District ${id} was deleted from database`)
+      return response.status(202).json(`District ${id} was deleted from database`)
     } else {
-      response.status(422).json({ error: 'Not Found' })
+      return response.status(422).json({ error: 'Not Found' })
     }
   })
   .catch(error => {
