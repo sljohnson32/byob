@@ -26,12 +26,12 @@ const checkAuth = (request, response, next) => {
   jwt.verify(token, secretKey, function(error, decoded){
     console.log('app name', decoded);
     console.log('error?', error);
-    if(error) {
+    if (error) {
       return response.status(403).json({ error: 'Invalid App Name1' })
     }
-    if(decoded.appName !== allowedAppName){
+    if (decoded.appName !== allowedAppName){
       return response.status(403).json({ error: 'Invalid App Name2' })
-    }
+    } else request.admin = decoded.admin;
   });
   next();
 };
@@ -53,7 +53,7 @@ app.post('/api/v1/authentication', (request, response) => {
         .send({ error: `Expected format: { email: <String>, appName: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
-  if (payload.email.endsWith('@turing.io')) { payload.user = 'admin'} ;
+  if (payload.email.endsWith('@turing.io')) { payload.admin = true } ;
 
   let token = jwt.sign(payload, secretKey, options)
   return response.status(201).json(token)
@@ -224,6 +224,8 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let schoolPatch = request.body;
+
+  console.log('REQUEST', request.admin)
 
   database('schools').where('id', id).update(schoolPatch, '*')
   .then(() => {
