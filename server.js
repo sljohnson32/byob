@@ -7,13 +7,16 @@ const database = require('knex')(configuration);
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.secretKey || require('./secretKey');
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 app.set('port', process.env.PORT || 3000);
 // app.locals.title = 'BYOB';
+
+const checkAdmin = ( admin, response)  => {
+
+}
 
 const checkAuth = (request, response, next) => {
   let bodyToken = request.body.token;
@@ -25,22 +28,20 @@ const checkAuth = (request, response, next) => {
   if(!token) {
     return response.status(403).json({ error: 'Invalid Token' })
   }
+
   jwt.verify(token, secretKey, function(error, decoded){
     if (error) {
-      return response.status(403).json({ error: 'Invalid App Name1' })
+      return response.status(403).json(error)
+    }
+    if (!decoded.admin) {
+      return response.status(403).json('Admin priviledges are required to complete this action.')
     }
     if (decoded.appName !== allowedAppName){
-      return response.status(403).json({ error: 'Invalid App Name2' })
-    } else request.admin = decoded.admin;
+      return response.status(403).json({ error: 'Invalid App' })
+    }
   });
   next();
 };
-
-const adminCheck = (admin, response) => {
-  if (!admin) {
-    return response.status(403).json('Admin priviledges are required to complete this action.')
-  }
-}
 
 //Client-side endpoint
 app.get('/', (request, response) => {
@@ -169,8 +170,6 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
   const school = request.body;
   let { admin } = request
 
-  adminCheck(admin, response)
-
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
       return response
@@ -190,9 +189,6 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
 
 app.post('/api/v1/districts', checkAuth, (request, response) => {
   const district = request.body;
-  let { admin } = request
-
-  adminCheck(admin, response)
 
   for (let requiredParameter of ['name', 'district_code', 'county_id']) {
     if (!district[requiredParameter]) {
@@ -215,9 +211,6 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
 app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let school = request.body;
-  let { admin } = request
-
-  adminCheck(admin, response)
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
@@ -239,9 +232,7 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let schoolPatch = request.body;
-  let { admin } = request
 
-  adminCheck(admin, response)
   database('schools').where('id', id).update(schoolPatch, '*')
   .then(() => {
     response.status(201).json(`School with id:${id} was updated.`)
@@ -252,9 +243,7 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
 //delete
 app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
-  let { admin } = request
 
-  adminCheck(admin, response)
   database('schools').where({ id }).del()
   .then(school => {
     if (school) {
