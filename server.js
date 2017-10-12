@@ -34,7 +34,7 @@ const checkAuth = (request, response, next) => {
       return response.status(403).json(error)
     }
     if (!decoded.admin) {
-      return response.status(403).json('Admin priviledges are required to complete this action.')
+      return response.status(403).json("Admin priviledges are required to complete this action.")
     }
     if (decoded.appName !== allowedAppName){
       return response.status(403).json({ error: 'Invalid App' })

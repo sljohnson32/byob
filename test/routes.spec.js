@@ -262,7 +262,7 @@ describe('API Routes', () => {
       .send(schoolBody)
       .end((error, response) => {
         response.should.have.status(403);
-        response.res.text.should.equal('Admin priviledges are required to complete this action.');
+        response.body.should.equal('Admin priviledges are required to complete this action.');
         done();
       });
     });
