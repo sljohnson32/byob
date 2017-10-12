@@ -9,7 +9,39 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);
 
+let adminToken;
+let regToken;
+
 chai.use(chaiHttp);
+
+//trying to figure out how to set JWT in the before
+// const setJWTs = () => {
+//   chai.request(server).fetch('/api/v1/authentication', {
+//     method: 'POST',
+//     body: JSON.stringify(
+//       {
+//         email: 'sam@turing.io',
+//         appName: 'byob',
+//       }
+//     )
+//     .then(response => {
+//       adminToken = response.json()
+//     })
+//   })
+//   window.fetch('/api/v1/authentication', {
+//     method: 'POST',
+//     body: JSON.stringify(
+//       {
+//         email: 'sam@rickandmorty.com',
+//         appName: 'byob',
+//       }
+//     )
+//     .then(response => {
+//       regToken = response.json()
+//     })
+//   })
+// };
+
 
 describe('Client Routes', () => {
   it('should return some text from our default page', (done) => {
@@ -18,12 +50,12 @@ describe('Client Routes', () => {
     .end((error, response) => {
       response.should.have.status(200);
       response.should.be.html;
-      response.res.text.should.include('School/s in session sucka!')
+      response.res.text.should.include('BYOB - School Finder')
       done();
     });
   });
 
-  it('should return a 404 for a route that does not exist', () => {
+  it('should return a 404 for a route that does not exist', (done) => {
     chai.request(server)
     .get('/rickandmorty')
     .end((error, response) => {
@@ -35,21 +67,23 @@ describe('Client Routes', () => {
 
 describe('API Routes', () => {
 
-  // before((done) => {
-  //   database.migrate.latest()
-  //   .then(() => done())
-  //   .catch((error) => {
-  //     response.status(500).json(error)
-  //   });
-  // });
-  //
-  // beforeEach((done) => {
-  //   database.seed.run()
-  //   .then(() => done())
-  //   .catch((error) => {
-  //     response.status(500).json(error)
-  //   });
-  // });
+  before((done) => {
+    // setJWTs()
+    console.log('tokens', adminToken, regToken);
+    database.migrate.latest()
+    .then(() => done())
+    .catch((error) => {
+      console.log(error);
+    });
+  });
+
+  beforeEach((done) => {
+    database.seed.run()
+    .then(() => done())
+    .catch((error) => {
+      console.log(error);
+    });
+  });
 
   it('should return all the counties!', (done) => {
     chai.request(server)
@@ -58,7 +92,7 @@ describe('API Routes', () => {
       response.should.have.status(200);
       response.should.be.json;
       response.should.be.a('object');
-      response.body.length.should.equal(65);
+      response.body.length.should.equal(2);
       done();
     });
   });
@@ -70,7 +104,7 @@ describe('API Routes', () => {
       response.should.have.status(200);
       response.should.be.json;
       response.should.be.a('object');
-      response.body.length.should.equal(180);
+      response.body.length.should.equal(4);
       done();
     });
   });
@@ -82,65 +116,71 @@ describe('API Routes', () => {
       response.should.have.status(200);
       response.should.be.json;
       response.should.be.a('object');
-      response.body.length.should.equal(1865);
+      response.body.length.should.equal(2);
       done();
     });
   });
 
   it('should be able to return a county by the id', (done)=> {
     chai.request(server)
-    .get('/api/v1/counties/16')
+    .get('/api/v1/counties/1')
     .end((error, response) => {
       response.should.have.status(200);
       response.should.be.json;
       response.should.be.a('object');
       response.body.length.should.equal(1);
+      response.body[0].should.have.property('id');
+      response.body[0].id.should.equal(1);
       response.body[0].should.have.property('name');
-      response.body[0].name.should.equal('DENVER');
+      response.body[0].name.should.equal('ADAMS');
       response.body[0].should.have.property('county_code');
-      response.body[0].county_code.should.equal('16');
+      response.body[0].county_code.should.equal('1');
       done();
     });
   });
 
   it('should be able to return a district by the id', (done)=> {
     chai.request(server)
-    .get('/api/v1/districts/31')
+    .get('/api/v1/districts/3')
     .end((error, response) => {
       response.should.have.status(200);
       response.should.be.json;
       response.should.be.a('object');
       response.body.length.should.equal(1);
+      response.body[0].should.have.property('id');
+      response.body[0].id.should.equal(3);
       response.body[0].should.have.property('name');
-      response.body[0].name.should.equal('DENVER COUNTY 1');
+      response.body[0].name.should.equal('ALAMOSA RE-11J');
       response.body[0].should.have.property('district_code');
-      response.body[0].district_code.should.equal('880');
+      response.body[0].district_code.should.equal('100');
       response.body[0].should.have.property('county_id');
-      response.body[0].county_id.should.equal(16);
+      response.body[0].county_id.should.equal(2);
       done();
     });
   });
 
   it('should be able to return a school by the id', (done)=> {
     chai.request(server)
-    .get('/api/v1/schools/539')
+    .get('/api/v1/schools/2')
     .end((error, response) => {
       response.should.have.status(200);
       response.should.be.json;
       response.should.be.a('object');
       response.body.length.should.equal(1);
+      response.body[0].should.have.property('id');
+      response.body[0].id.should.equal(2);
       response.body[0].should.have.property('name');
-      response.body[0].name.should.equal('EAST HIGH SCHOOL');
+      response.body[0].name.should.equal('ALAMOSA HIGH SCHOOL');
       response.body[0].should.have.property('school_code');
-      response.body[0].school_code.should.equal('2398');
+      response.body[0].school_code.should.equal('118');
       response.body[0].should.have.property('student_count');
-      response.body[0].student_count.should.equal(2543);
+      response.body[0].student_count.should.equal(598);
       response.body[0].should.have.property('teacher_count');
-      response.body[0].teacher_count.should.equal(136.1);
+      response.body[0].teacher_count.should.equal(33.02);
       response.body[0].should.have.property('student_teacher_ratio');
-      response.body[0].student_teacher_ratio.should.equal(18.69);
+      response.body[0].student_teacher_ratio.should.equal(18.11);
       response.body[0].should.have.property('district_id');
-      response.body[0].district_id.should.equal(31);
+      response.body[0].district_id.should.equal(3);
       done();
     });
   });
@@ -154,6 +194,47 @@ describe('API Routes', () => {
     });
   });
 
-  
+  it('should return a 404 for a district id that does not exist', (done) => {
+    chai.request(server)
+    .get('/ap1/v1/districts/4598978971')
+    .end((error, response) => {
+      response.should.have.status(404);
+      done();
+    });
+  });
+
+  it('should return a 404 for a counties id that does not exist', (done) => {
+    chai.request(server)
+    .get('/ap1/v1/counties/8937410892374')
+    .end((error, response) => {
+      response.should.have.status(404);
+      done();
+    });
+  });
+
+  describe('Authentication and Authorization tests', () => {
+    it('should authenticate with a JWT', (done) => {
+      chai.request(server)
+      .post('/api/v1/authentication')
+      .send({
+        email: 'sam@turing.io',
+        appName: 'byob'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('string');
+        response.body.should.equal('dan');
+      });
+    });
+
+  });
+
+  //post
+  //put
+
+  //patch
+
+
+
 
 });
