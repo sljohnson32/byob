@@ -64,6 +64,7 @@ describe('API Routes', () => {
   });
 
   beforeEach((done) => {
+    console.log('SEEDING')
     database.seed.run()
     .then(() => done())
     .catch((error) => {
