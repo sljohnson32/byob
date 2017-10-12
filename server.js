@@ -36,6 +36,12 @@ const checkAuth = (request, response, next) => {
   next();
 };
 
+const adminCheck = (admin, response) => {
+  if (!admin) {
+    return response.status(403).json('Admin priviledges are required to complete this action.')
+  }
+}
+
 //Client-side endpoint
 app.get('/', (request, response) => {
   response.send('School/s in session sucka!');
@@ -161,6 +167,9 @@ app.get('/api/v1/schools/:id', (request, response) => {
 //posts -- not sure how we will even make a post at this point--
 app.post('/api/v1/schools', checkAuth, (request, response) => {
   const school = request.body;
+  let { admin } = request
+
+  adminCheck(admin, response)
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
@@ -181,6 +190,9 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
 
 app.post('/api/v1/districts', checkAuth, (request, response) => {
   const district = request.body;
+  let { admin } = request
+
+  adminCheck(admin, response)
 
   for (let requiredParameter of ['name', 'district_code', 'county_id']) {
     if (!district[requiredParameter]) {
@@ -203,6 +215,9 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
 app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let school = request.body;
+  let { admin } = request
+
+  adminCheck(admin, response)
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
@@ -224,9 +239,9 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let { id } = request.params;
   let schoolPatch = request.body;
+  let { admin } = request
 
-  console.log('REQUEST', request.admin)
-
+  adminCheck(admin, response)
   database('schools').where('id', id).update(schoolPatch, '*')
   .then(() => {
     response.status(201).json(`School with id:${id} was updated.`)
@@ -237,7 +252,9 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
 //delete
 app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
+  let { admin } = request
 
+  adminCheck(admin, response)
   database('schools').where({ id }).del()
   .then(school => {
     if (school) {
