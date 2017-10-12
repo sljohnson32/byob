@@ -96,7 +96,9 @@ app.get('/api/v1/districts', (request, response) => {
   const checkQuery = () => {
     if (countyID) {
       return database('districts').where('county_id', countyID).select()
-    } else return database('districts').select()
+    } else {
+      return database('districts').select()
+    }
   }
 
   checkQuery()
