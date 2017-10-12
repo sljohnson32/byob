@@ -1,47 +1,48 @@
 const countyData = [
   {
+    "id": "1",
     "code": "1",
     "name": "ADAMS",
-    "id": "1"
   },
   {
+    "id": "2",
     "code": "2",
-    "name": "ALAMOSA",
-    "id": "2"
+    "name": "ALAMOSA"
   }
 ]
 const districtData = [
   {
+    "id": "1",
     "district_code": "10",
     "district_name": "MAPLETON 1",
     "county_code": "1",
-    "county_name": "ADAMS",
-    "id": "1"
+    "county_name": "ADAMS"
   },
   {
+    "id": "2",
     "district_code": "20",
     "district_name": "ADAMS 12 FIVE STAR SCHOOLS",
     "county_code": "1",
-    "county_name": "ADAMS",
-    "id": "2"
+    "county_name": "ADAMS"
   },
   {
+    "id": "3",
     "district_code": "100",
     "district_name": "ALAMOSA RE-11J",
     "county_code": "2",
-    "county_name": "ALAMOSA",
-    "id": "3"
+    "county_name": "ALAMOSA"
   },
   {
+    "id": "4",
     "district_code": "110",
     "district_name": "SANGRE DE CRISTO RE-22J",
     "county_code": "2",
-    "county_name": "ALAMOSA",
-    "id": "4"
+    "county_name": "ALAMOSA"
   }
 ]
 const schoolData = [
   {
+    "id": "1",
     "county_code": "1",
     "county_name": "ADAMS",
     "district_code": "10",
@@ -50,10 +51,10 @@ const schoolData = [
     "school_name": "MAPLETON EXPEDITIONARY SCHOOL OF THE ARTS",
     "student_count": "638",
     "teacher_count": "30.50",
-    "pupil_teacher_ratio": "20.92",
-    "id": "1"
+    "pupil_teacher_ratio": "20.92"
   },
   {
+    "id": "2",
     "county_code": "2",
     "county_name": "ALAMOSA",
     "district_code": "100",
@@ -62,8 +63,7 @@ const schoolData = [
     "school_name": "ALAMOSA HIGH SCHOOL",
     "student_count": "598",
     "teacher_count": "33.02",
-    "pupil_teacher_ratio": "18.11",
-    "id": "2"
+    "pupil_teacher_ratio": "18.11"
   }
 ]
 
@@ -94,10 +94,10 @@ const createCounty = (knex, county) => {
 
 const createDistrict = (knex, district) => {
   return knex('districts').insert({
+    id: district.id,
     name: district.district_name,
     district_code: district.district_code,
-    county_id: district.county_id,
-    id: district.id
+    county_id: district.county_id
   }, 'id')
   .then(districtID => {
     let schoolPromises = [];

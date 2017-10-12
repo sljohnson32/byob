@@ -3,7 +3,7 @@
 module.exports = {
   test: {
       client: 'pg',
-      connection: process.env.DATABASE_URL || 'postgres://localhost/school_finder',
+      connection: process.env.DATABASE_URL || 'postgres://localhost/school_finder_test',
       migrations: {
         directory: './db/migrations'
       },

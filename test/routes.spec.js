@@ -217,20 +217,42 @@ describe('API Routes', () => {
 
   //post
   describe('POST to the API', () => {
+
     it('should be able to add a district', (done) => {
       chai.request(server)
       .post('/api/v1/districts')
       .set('Authorization', adminToken)
       .send({
         name: 'Denver',
-        district_code: '1234',
+        district_code: '0034',
         county_id: '1'
       })
       .end((error, response) => {
         response.should.have.status(201);
+        response.body.should.have.property('id');
         done();
       });
     });
+
+    it('should be able to add a school', (done) => {
+      chai.request(server)
+      .post('/api/v1/schools')
+      .set('Authorization', adminToken)
+      .send({
+        name: 'School for the Dans',
+        school_code: '1234',
+        student_count: '2',
+        teacher_count: '1',
+        student_teacher_ratio: '.5',
+        district_id: '1'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.have.property('id');
+        done();
+      });
+    });
+
   });
   //put
 
