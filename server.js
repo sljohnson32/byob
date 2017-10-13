@@ -178,10 +178,9 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
 
   database('schools').insert(school, 'id')
     .then(school => {
-      response.status(201).json({ id: school[0] })
+      response.status(201).json({ id: school[0] });
     })
     .catch(error => {
-      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -198,10 +197,9 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
 
   database('districts').insert(district, 'id')
     .then(school => {
-      response.status(201).json({ id: school[0] })
+      response.status(201).json({ id: school[0] });
     })
     .catch(error => {
-      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -220,12 +218,12 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   }
 
   database('schools').where({ id }).update(school, 'id')
-  .then(() => {
-    response.status(201).json({ id })
-  })
-  .catch(error => {
-    response.status(500).json(error);
-  });
+    .then(() => {
+      response.status(201).json({ id });
+    })
+    .catch(error => {
+      response.status(500).json(error);
+    });
 });
 
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
@@ -233,13 +231,13 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let schoolPatch = request.body;
 
   database('schools').where('id', id).update(schoolPatch, '*')
-  .then(() => {
-    response.status(201).json(`School with id:${id} was updated.`)
-  })
-  .catch(error => {
-    response.status(500).json(error)
-  })
-})
+    .then(() => {
+      response.status(201).json(`School with id:${id} was updated.`);
+    })
+    .catch(error => {
+      response.status(500).json(error);
+    });
+});
 
 //delete
 app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
