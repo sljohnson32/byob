@@ -54,6 +54,7 @@ section {
   word-wrap: break-word;
 }
 
+
 @media (max-width: 415px) {
   body {
     display: flex;
