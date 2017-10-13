@@ -53,9 +53,11 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
 
   before((done) => {
-    setJWTs()
+    setJWTs();
     database.migrate.latest()
-    .then(() => done())
+    .then(() => {
+      done()
+    })
     .catch((error) => {
       console.log('error1', error);
     });
@@ -225,8 +227,8 @@ describe('API Routes', () => {
 
   //post
   describe('POST to the API', () => {
-    let districtBody = { name: 'Denver', district_code: '0034', county_id: '1' }
-    let schoolBody = { name: 'School for the Dans', school_code: '1234', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' }
+    let districtBody = { id: 5, name: "Denver 2.0", district_code: "92345", county_id: "1" };
+    let schoolBody = { id: 3, name: "School for the Dans", school_code: "123334", student_count: "2", teacher_count: "1", student_teacher_ratio: ".5", district_id: "1" };
 
     it('should be able to add a district', (done) => {
       chai.request(server)
@@ -334,6 +336,53 @@ describe('API Routes', () => {
         response.body.should.equal('School with id:2 was updated.');
         done();
       })
+    });
+  });
+
+  describe('DELETE to API', () => {
+
+    it('should delete a school and return the id in the message', (done) => {
+      chai.request(server)
+      .delete('/api/v1/schools/2')
+      .set('Authorization', adminToken)
+      .end((error, response) => {
+        response.should.have.status(202);
+        response.body.should.equal('School 2 was deleted from database');
+        done();
+      });
+    });
+
+    it('should return an error message if school id is not found in DB', (done) => {
+      chai.request(server)
+      .delete('/api/v1/schools/1983')
+      .set('Authorization', adminToken)
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.body.error.should.equal('Not Found');
+        done();
+      });
+    });
+
+    it('should delete a district and return the id in message', (done) => {
+      chai.request(server)
+      .delete('/api/v1/districts/2')
+      .set('Authorization', adminToken)
+      .end((error, response) => {
+        response.should.have.status(202);
+        response.body.should.equal('District 2 was deleted from database');
+        done();
+      });
+    });
+
+    it('should return an error message if district id is not found in DB', (done) => {
+      chai.request(server)
+      .delete('/api/v1/districts/1983')
+      .set('Authorization', adminToken)
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.body.error.should.equal('Not Found');
+        done();
+      });
     });
   });
 

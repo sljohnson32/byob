@@ -159,10 +159,8 @@ app.get('/api/v1/schools/:id', (request, response) => {
   });
 });
 
-//posts -- not sure how we will even make a post at this point--
 app.post('/api/v1/schools', checkAuth, (request, response) => {
   const school = request.body;
-  let { admin } = request
 
   for (let requiredParameter of ['name', 'school_code', 'student_count', 'teacher_count', 'student_teacher_ratio', 'district_id']) {
     if (!school[requiredParameter]) {
@@ -177,6 +175,7 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
       response.status(201).json({ id: school[0] })
     })
     .catch(error => {
+      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -186,9 +185,8 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
 
   for (let requiredParameter of ['name', 'district_code', 'county_id']) {
     if (!district[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { name: <String>, district_code: <String>, county_id: <String> }. You're missing a "${requiredParameter}" property.` });
+      return response.status(422)
+        .json({ error: `Expected format: { name: <String>, district_code: <String>, county_id: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
@@ -197,6 +195,7 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
       response.status(201).json({ id: school[0] })
     })
     .catch(error => {
+      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -210,7 +209,7 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
     if (!school[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <Integer>, teacher_count: <Integer>, student_teacher_ratio: <Integer>, district_id: <Integer> }. You're missing a "${requiredParameter}" property.` });
+        .json({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <Integer>, teacher_count: <Integer>, student_teacher_ratio: <Integer>, district_id: <Integer> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
