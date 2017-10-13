@@ -83,7 +83,7 @@ app.get('/api/v1/schools', (request, response) => {
       return response.status(200).json(schools);
     })
     .catch((error) => {
-      response.status(404).json({error});
+      response.status(500).json({error});
     });
 });
 
@@ -103,7 +103,7 @@ app.get('/api/v1/districts', (request, response) => {
       response.status(200).json(districts);
     })
     .catch((error) => {
-      response.status(404).json({error});
+      response.status(500).json({error});
     });
 });
 
@@ -113,7 +113,7 @@ app.get('/api/v1/counties', (request, response) => {
       response.status(200).json(counties);
     })
     .catch((error) => {
-      response.status(404).json({ error });
+      response.status(500).json({ error });
     });
 });
 
@@ -122,12 +122,14 @@ app.get('/api/v1/counties/:id', (request, response) => {
 
   database('counties').where('id', id).select()
     .then((county) => {
-      response.status(200).json(county);
+      if (county.length == 0) {
+        return response.status(404).json({
+          error: `Could not find county with id ${id}`
+        });
+      } else return response.status(200).json(county);
     })
     .catch((error) => {
-      response.status(404).json({
-        error: `Could not find county with id ${request.params.id}`
-      });
+      response.status(500).json(error);
     });
 });
 
@@ -135,13 +137,15 @@ app.get('/api/v1/districts/:id', (request, response) => {
   const id = request.params.id;
 
   database('districts').where('id', id).select()
-    .then((county) => {
-      response.status(200).json(county);
+    .then((district) => {
+      if (district.length == 0) {
+        return response.status(404).json({
+          error: `Could not find district with id ${id}`
+        });
+      } else return response.status(200).json(district);
     })
     .catch((error) => {
-      response.status(404).json({
-        error: `Could not find county with id ${request.params.id}`
-      });
+      response.status(500).json(error);
     });
 });
 
@@ -149,14 +153,16 @@ app.get('/api/v1/schools/:id', (request, response) => {
   const id = request.params.id;
 
   database('schools').where('id', id).select()
-    .then((county) => {
-      response.status(200).json(county)
+    .then((school) => {
+      if (school.length == 0) {
+        return response.status(404).json({
+          error: `Could not find school with id ${id}`
+      });
+    } else return response.status(200).json(school)
     })
     .catch((error) => {
-      response.status(404).json({
-        error: `Could not find county with id ${request.params.id}`
+      response.status(500).json(error);
     });
-  });
 });
 
 app.post('/api/v1/schools', checkAuth, (request, response) => {
@@ -243,9 +249,7 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   .then(school => {
     if (school) {
       return response.status(202).json(`School ${id} was deleted from database`)
-    } else {
-      return response.status(422).json({ error: 'Not Found' })
-    }
+    } else return response.status(422).json({ error: 'Not Found' })
   })
   .catch(error => {
     response.status(500).json({ error })
@@ -259,9 +263,7 @@ app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   .then(district => {
     if (district) {
       return response.status(202).json(`District ${id} was deleted from database`)
-    } else {
-      return response.status(422).json({ error: 'Not Found' })
-    }
+    } else return response.status(422).json({ error: 'Not Found' })
   })
   .catch(error => {
     response.status(500).json({ error })
