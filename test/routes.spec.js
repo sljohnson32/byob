@@ -54,20 +54,20 @@ describe('API Routes', () => {
   before((done) => {
     setJWTs();
     database.migrate.latest()
-    .then(() => {
-      done();
-    })
-    .catch((error) => {
-      console.log('Before error: ', error); // eslint-disable-line
-    });
+      .then(() => {
+        done();
+      })
+      .catch((error) => {
+        console.log('Before error: ', error); // eslint-disable-line
+      });
   });
 
   beforeEach((done) => {
     database.seed.run()
-    .then(() => done())
-    .catch((error) => {
-      console.log('Before each error: ', error);// eslint-disable-line
-    });
+      .then(() => done())
+      .catch((error) => {
+        console.log('Before each error: ', error);// eslint-disable-line
+      });
   });
 
   it('should return all the counties!', (done) => {
