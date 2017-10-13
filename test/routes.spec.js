@@ -227,8 +227,8 @@ describe('API Routes', () => {
 
   //post
   describe('POST to the API', () => {
-    let districtBody = { name: "Denver 2.0", district_code: "92345", county_id: "1" };
-    let schoolBody = { name: "School for the Dans", school_code: "123334", student_count: "2", teacher_count: "1", student_teacher_ratio: ".5", district_id: "1" };
+    let districtBody = { id: 5, name: "Denver 2.0", district_code: "92345", county_id: "1" };
+    let schoolBody = { id: 3, name: "School for the Dans", school_code: "123334", student_count: "2", teacher_count: "1", student_teacher_ratio: ".5", district_id: "1" };
 
     it('should be able to add a district', (done) => {
       chai.request(server)
