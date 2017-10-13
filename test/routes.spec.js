@@ -105,6 +105,32 @@ describe('API Routes', () => {
         done();
       });
   });
+  it('should return all the schools below the ratio max value entered in a query param', (done) => {
+    chai.request(server)
+      .get('/api/v1/schools')
+      .query('ratioMax=19')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.should.be.a('object');
+        response.body.length.should.equal(1);
+        response.body[0].student_teacher_ratio.should.equal(18.11);
+        done();
+      });
+  });
+  it('should return all the schools above the ratio min value entered in a query param', (done) => {
+    chai.request(server)
+      .get('/api/v1/schools')
+      .query('ratioMin=19')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.should.be.a('object');
+        response.body.length.should.equal(1);
+        response.body[0].student_teacher_ratio.should.equal(20.92);
+        done();
+      });
+  });
 
   it('should be able to return a county by the id', (done)=> {
     chai.request(server)
