@@ -28,7 +28,7 @@ exports.up = function(knex, Promise) {
 
       table.timestamps(true, true);
     }),
-  ])
+  ]);
 };
 
 exports.down = function(knex, Promise) {
@@ -36,5 +36,5 @@ exports.down = function(knex, Promise) {
     knex.dropTable('schools'),
     knex.dropTable('districts'),
     knex.dropTable('counties')
-  ])
+  ]);
 };
