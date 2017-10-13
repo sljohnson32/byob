@@ -218,21 +218,12 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   }
 
   database('schools').where({ id }).update(school, 'id')
-<<<<<<< HEAD
-  .then(() => {
-    response.status(201).json({ id });
-  })
-  .catch(error => {
-    response.status(500).json(error);
-  });
-=======
     .then(() => {
       response.status(201).json({ id });
     })
     .catch(error => {
       response.status(500).json(error);
     });
->>>>>>> master
 });
 
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
@@ -240,21 +231,12 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let schoolPatch = request.body;
 
   database('schools').where('id', id).update(schoolPatch, '*')
-<<<<<<< HEAD
-  .then(() => {
-    response.status(201).json(`School with id:${id} was updated.`);
-  })
-  .catch(error => {
-    response.status(500).json(error);
-  });
-=======
     .then(() => {
       response.status(201).json(`School with id:${id} was updated.`);
     })
     .catch(error => {
       response.status(500).json(error);
     });
->>>>>>> master
 });
 
 //delete
@@ -262,28 +244,28 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('schools').where({ id }).del()
-  .then(school => {
-    if (school) {
-      return response.status(202).json(`School ${id} was deleted from database`);
-    } else return response.status(422).json({ error: 'Not Found' });
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(school => {
+      if (school) {
+        return response.status(202).json(`School ${id} was deleted from database`);
+      } else return response.status(422).json({ error: 'Not Found' });
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('districts').where({ id }).del()
-  .then(district => {
-    if (district) {
-      return response.status(202).json(`District ${id} was deleted from database`);
-    } else return response.status(422).json({ error: 'Not Found' });
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(district => {
+      if (district) {
+        return response.status(202).json(`District ${id} was deleted from database`);
+      } else return response.status(422).json({ error: 'Not Found' });
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.listen(app.get('port'), () => {

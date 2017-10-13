@@ -17,41 +17,19 @@ chai.use(chaiHttp);
 //trying to figure out how to set JWT in the before
 const setJWTs = () => {
   chai.request(server)
-<<<<<<< HEAD
-  .post('/api/v1/authentication')
-  .send({ email: 'sam@turing.io', appName: 'byob' })
-  .end((error, response) => adminToken = JSON.parse(response.text));
-
-
-  chai.request(server)
-  .post('/api/v1/authentication')
-  .send({ email: 'sam@ricknmorty.com', appName: 'byob' })
-  .end((error, response) => regToken = JSON.parse(response.text));
-=======
     .post('/api/v1/authentication')
     .send({ email: 'sam@turing.io', appName: 'byob' })
     .end((error, response) => adminToken = JSON.parse(response.text));
-
 
   chai.request(server)
     .post('/api/v1/authentication')
     .send({ email: 'sam@ricknmorty.com', appName: 'byob' })
     .end((error, response) => regToken = JSON.parse(response.text));
->>>>>>> master
 };
 
 describe('Client Routes', () => {
   it('should return some text from our default page', (done) => {
     chai.request(server)
-<<<<<<< HEAD
-    .get('/')
-    .end((error, response) => {
-      response.should.have.status(200);
-      response.should.be.html;
-      response.res.text.should.include('BYOB - School Finder');
-      done();
-    });
-=======
       .get('/')
       .end((error, response) => {
         response.should.have.status(200);
@@ -59,7 +37,6 @@ describe('Client Routes', () => {
         response.res.text.should.include('BYOB - School Finder');
         done();
       });
->>>>>>> master
   });
 
   it('should return a 404 for a route that does not exist', (done) => {
@@ -77,36 +54,20 @@ describe('API Routes', () => {
   before((done) => {
     setJWTs();
     database.migrate.latest()
-<<<<<<< HEAD
     .then(() => {
       done();
     })
     .catch((error) => {
       console.log('Before error: ', error); // eslint-disable-line
     });
-=======
-      .then(() => {
-        done();
-      })
-      .catch((error) => {
-        console.log('error1', error);
-      });
->>>>>>> master
   });
 
   beforeEach((done) => {
     database.seed.run()
-<<<<<<< HEAD
     .then(() => done())
     .catch((error) => {
       console.log('Before each error: ', error);// eslint-disable-line
     });
-=======
-      .then(() => done())
-      .catch((error) => {
-        console.log('error2', error);
-      });
->>>>>>> master
   });
 
   it('should return all the counties!', (done) => {
@@ -281,16 +242,6 @@ describe('API Routes', () => {
 
     it('should send a 403 status if a non-admin user tried to POST a district', (done) => {
       chai.request(server)
-<<<<<<< HEAD
-      .post('/api/v1/districts')
-      .set('Authorization', regToken)
-      .send(districtBody)
-      .end((error, response) => {
-        response.should.have.status(403);
-        response.body.error.should.equal('Admin priviledges are required to complete this action.');
-        done();
-      });
-=======
         .post('/api/v1/districts')
         .set('Authorization', regToken)
         .send(districtBody)
@@ -299,7 +250,6 @@ describe('API Routes', () => {
           response.body.error.should.equal('Admin priviledges are required to complete this action.');
           done();
         });
->>>>>>> master
     });
 
     it('should be able to add a school', (done) => {
@@ -316,16 +266,6 @@ describe('API Routes', () => {
 
     it('should send a 403 status if a non-admin user tried to POST a school', (done) => {
       chai.request(server)
-<<<<<<< HEAD
-      .post('/api/v1/schools')
-      .set('Authorization', regToken)
-      .send(schoolBody)
-      .end((error, response) => {
-        response.should.have.status(403);
-        response.body.error.should.equal('Admin priviledges are required to complete this action.');
-        done();
-      });
-=======
         .post('/api/v1/schools')
         .set('Authorization', regToken)
         .send(schoolBody)
@@ -334,7 +274,6 @@ describe('API Routes', () => {
           response.body.error.should.equal('Admin priviledges are required to complete this action.');
           done();
         });
->>>>>>> master
     });
 
   });
@@ -342,24 +281,6 @@ describe('API Routes', () => {
   describe('PUT to API', () => {
     it('should be able to edit an existing school', (done) => {
       chai.request(server)
-<<<<<<< HEAD
-      .put('/api/v1/schools/2')
-      .set('Authorization', adminToken)
-      .send({
-        name: 'ALAMOSA HIGH SCHOOL',
-        school_code: '118',
-        student_count: '600',
-        teacher_count: '30',
-        student_teacher_ratio: '20',
-        district_id: '1'
-      })
-      .end((error, response) => {
-        response.should.have.status(201);
-        response.body.should.have.property('id');
-        response.body.id.should.equal('2');
-        done();
-      });
-=======
         .put('/api/v1/schools/2')
         .set('Authorization', adminToken)
         .send({
@@ -376,7 +297,6 @@ describe('API Routes', () => {
           response.body.id.should.equal('2');
           done();
         });
->>>>>>> master
     });
 
     it('should respond with a 403 if you lack the proper authorization', (done) => {
@@ -404,18 +324,6 @@ describe('API Routes', () => {
 
     it('should update one specific property of a school', (done) => {
       chai.request(server)
-<<<<<<< HEAD
-      .patch('/api/v1/schools/2')
-      .set('Authorization', adminToken)
-      .send({
-        student_count: '200'
-      })
-      .end((error, response) => {
-        response.should.have.status(201);
-        response.body.should.equal('School with id:2 was updated.');
-        done();
-      });
-=======
         .patch('/api/v1/schools/2')
         .set('Authorization', adminToken)
         .send({
@@ -426,21 +334,10 @@ describe('API Routes', () => {
           response.body.should.equal('School with id:2 was updated.');
           done();
         });
->>>>>>> master
     });
 
     it('should respond with a 403 if you lack the proper authorization', () => {
       chai.request(server)
-<<<<<<< HEAD
-      .patch('/api/v1/schools/2')
-      .set('Authorization', regToken)
-      .send({
-        student_count: '200'
-      })
-      .end((error, response) => {
-        response.should.have.status(403);
-      });
-=======
         .patch('/api/v1/schools/2')
         .set('Authorization', regToken)
         .send({
@@ -449,7 +346,6 @@ describe('API Routes', () => {
         .end((error, response) => {
           response.should.have.status(403);
         });
->>>>>>> master
     });
 
   });
