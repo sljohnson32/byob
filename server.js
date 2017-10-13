@@ -34,8 +34,8 @@ const checkAuth = (request, response, next) => {
     if (decoded.appName !== allowedAppName){
       return response.status(403).json({ error: "Invalid App" })
     }
+    next();
   });
-  next();
 };
 
 //Client-side endpoint
