@@ -218,12 +218,21 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   }
 
   database('schools').where({ id }).update(school, 'id')
+<<<<<<< HEAD
   .then(() => {
     response.status(201).json({ id });
   })
   .catch(error => {
     response.status(500).json(error);
   });
+=======
+    .then(() => {
+      response.status(201).json({ id });
+    })
+    .catch(error => {
+      response.status(500).json(error);
+    });
+>>>>>>> master
 });
 
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
@@ -231,12 +240,21 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let schoolPatch = request.body;
 
   database('schools').where('id', id).update(schoolPatch, '*')
+<<<<<<< HEAD
   .then(() => {
     response.status(201).json(`School with id:${id} was updated.`);
   })
   .catch(error => {
     response.status(500).json(error);
   });
+=======
+    .then(() => {
+      response.status(201).json(`School with id:${id} was updated.`);
+    })
+    .catch(error => {
+      response.status(500).json(error);
+    });
+>>>>>>> master
 });
 
 //delete
