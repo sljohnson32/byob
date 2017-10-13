@@ -157,8 +157,8 @@ app.get('/api/v1/schools/:id', (request, response) => {
       if (school.length == 0) {
         return response.status(404).json({
           error: `Could not find school with id ${id}`
-      });
-    } else return response.status(200).json(school)
+        });
+      } else return response.status(200).json(school);
     })
     .catch((error) => {
       response.status(500).json(error);
@@ -244,32 +244,32 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('schools').where({ id }).del()
-  .then(school => {
-    if (school) {
-      return response.status(202).json(`School ${id} was deleted from database`)
-    } else return response.status(422).json({ error: 'Not Found' })
-  })
-  .catch(error => {
-    response.status(500).json({ error })
-  })
+    .then(school => {
+      if (school) {
+        return response.status(202).json(`School ${id} was deleted from database`);
+      } else return response.status(422).json({ error: 'Not Found' });
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('districts').where({ id }).del()
-  .then(district => {
-    if (district) {
-      return response.status(202).json(`District ${id} was deleted from database`)
-    } else return response.status(422).json({ error: 'Not Found' })
-  })
-  .catch(error => {
-    response.status(500).json({ error })
-  })
+    .then(district => {
+      if (district) {
+        return response.status(202).json(`District ${id} was deleted from database`);
+      } else return response.status(422).json({ error: 'Not Found' });
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`BYOB is running on ${app.get('port')}.`);
+  console.log(`BYOB is running on ${app.get('port')}.`); // eslint-disable-line
 });
 
 module.exports = app;

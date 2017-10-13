@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
-const should = chai.should();
+const should = chai.should(); // eslint-disable-line
 const chaiHttp = require('chai-http');
 const server = require('../server');
 
@@ -20,7 +20,6 @@ const setJWTs = () => {
     .post('/api/v1/authentication')
     .send({ email: 'sam@turing.io', appName: 'byob' })
     .end((error, response) => adminToken = JSON.parse(response.text));
-
 
   chai.request(server)
     .post('/api/v1/authentication')
@@ -55,20 +54,20 @@ describe('API Routes', () => {
   before((done) => {
     setJWTs();
     database.migrate.latest()
-      .then(() => {
-        done();
-      })
-      .catch((error) => {
-        console.log('error1', error);
-      });
+    .then(() => {
+      done();
+    })
+    .catch((error) => {
+      console.log('Before error: ', error); // eslint-disable-line
+    });
   });
 
   beforeEach((done) => {
     database.seed.run()
-      .then(() => done())
-      .catch((error) => {
-        console.log('error2', error);
-      });
+    .then(() => done())
+    .catch((error) => {
+      console.log('Before each error: ', error);// eslint-disable-line
+    });
   });
 
   it('should return all the counties!', (done) => {
@@ -222,7 +221,6 @@ describe('API Routes', () => {
           done();
         });
     });
-
   });
 
   //post

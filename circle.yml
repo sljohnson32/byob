@@ -17,3 +17,7 @@ deployment:
     branch: master
     heroku:
       appname: sj-da-byob
+
+test:
+  pre:
+    - eslint *.js
