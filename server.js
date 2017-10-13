@@ -150,13 +150,13 @@ app.get('/api/v1/schools/:id', (request, response) => {
 
   database('schools').where('id', id).select()
     .then((county) => {
-      response.status(200).json(county)
+      response.status(200).json(county);
     })
     .catch((error) => {
       response.status(404).json({
         error: `Could not find county with id ${request.params.id}`
+      });
     });
-  });
 });
 
 app.post('/api/v1/schools', checkAuth, (request, response) => {
@@ -172,10 +172,9 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
 
   database('schools').insert(school, 'id')
     .then(school => {
-      response.status(201).json({ id: school[0] })
+      response.status(201).json({ id: school[0] });
     })
     .catch(error => {
-      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -192,10 +191,9 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
 
   database('districts').insert(district, 'id')
     .then(school => {
-      response.status(201).json({ id: school[0] })
+      response.status(201).json({ id: school[0] });
     })
     .catch(error => {
-      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -214,12 +212,12 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
   }
 
   database('schools').where({ id }).update(school, 'id')
-  .then(() => {
-    response.status(201).json({ id })
-  })
-  .catch(error => {
-    response.status(500).json(error);
-  });
+    .then(() => {
+      response.status(201).json({ id });
+    })
+    .catch(error => {
+      response.status(500).json(error);
+    });
 });
 
 app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
@@ -227,45 +225,45 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
   let schoolPatch = request.body;
 
   database('schools').where('id', id).update(schoolPatch, '*')
-  .then(() => {
-    response.status(201).json(`School with id:${id} was updated.`)
-  })
-  .catch(error => {
-    response.status(500).json(error)
-  })
-})
+    .then(() => {
+      response.status(201).json(`School with id:${id} was updated.`);
+    })
+    .catch(error => {
+      response.status(500).json(error);
+    });
+});
 
 //delete
 app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('schools').where({ id }).del()
-  .then(school => {
-    if (school) {
-      return response.status(202).json(`School ${id} was deleted from database`)
-    } else {
-      return response.status(422).json({ error: 'Not Found' })
-    }
-  })
-  .catch(error => {
-    response.status(500).json({ error })
-  })
+    .then(school => {
+      if (school) {
+        return response.status(202).json(`School ${id} was deleted from database`);
+      } else {
+        return response.status(422).json({ error: 'Not Found' });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('districts').where({ id }).del()
-  .then(district => {
-    if (district) {
-      return response.status(202).json(`District ${id} was deleted from database`)
-    } else {
-      return response.status(422).json({ error: 'Not Found' })
-    }
-  })
-  .catch(error => {
-    response.status(500).json({ error })
-  })
+    .then(district => {
+      if (district) {
+        return response.status(202).json(`District ${id} was deleted from database`);
+      } else {
+        return response.status(422).json({ error: 'Not Found' });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.listen(app.get('port'), () => {
