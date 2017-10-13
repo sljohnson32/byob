@@ -21,16 +21,16 @@ const checkAuth = (request, response, next) => {
   let allowedAppName = 'byob';
 
   if(!token) {
-    return response.status(403).json({ error: "Invalid Token" })
+    return response.status(403).json({ error: 'Invalid Token' });
   }
 
   jwt.verify(token, secretKey, (error, decoded) => {
     if (error) {
-      return response.status(403).json(error)
+      return response.status(403).json(error);
     } else if (!decoded.admin) {
-      return response.status(403).json({ error: "Admin priviledges are required to complete this action." })
+      return response.status(403).json({ error: 'Admin priviledges are required to complete this action.' });
     } else if (decoded.appName !== allowedAppName){
-      return response.status(403).json({ error: "Invalid App" })
+      return response.status(403).json({ error: 'Invalid App' });
     } else next();
   });
 };
@@ -43,20 +43,20 @@ app.get('/', (request, response) => {
 //Authentication endpoint
 app.post('/api/v1/authentication', (request, response) => {
   let payload = request.body;
-  let options = { expiresIn: '1h' }
+  let options = { expiresIn: '1h' };
 
   for (let requiredParameter of ['email', 'appName']) {
     if (!request.body[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { email: <String>, appName: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { email: <String>, appName: <String> }. You're missing a '${requiredParameter}' property.` });
     }
   }
-  if (payload.email.endsWith('@turing.io')) { payload.admin = true } ;
+  if (payload.email.endsWith('@turing.io')) { payload.admin = true; }
 
-  let token = jwt.sign(payload, secretKey, options)
-  return response.status(201).json(token)
-})
+  let token = jwt.sign(payload, secretKey, options);
+  return response.status(201).json(token);
+});
 
 //API endpoints
 app.get('/api/v1/schools', (request, response) => {
@@ -65,25 +65,25 @@ app.get('/api/v1/schools', (request, response) => {
 
   const checkQuery = () => {
     if (ratioMin && ratioMax) {
-      return database('schools').where('student_teacher_ratio', '>=', ratioMin).where('student_teacher_ratio', '<=', ratioMax).select()
+      return database('schools').where('student_teacher_ratio', '>=', ratioMin).where('student_teacher_ratio', '<=', ratioMax).select();
     }
     if (ratioMin && !ratioMax) {
-      return database('schools').where('student_teacher_ratio', '>=', ratioMin).select()
+      return database('schools').where('student_teacher_ratio', '>=', ratioMin).select();
     }
     if (!ratioMin && ratioMax) {
-      return database('schools').where('student_teacher_ratio', '<=', ratioMax).select()
+      return database('schools').where('student_teacher_ratio', '<=', ratioMax).select();
     }
     if (!ratioMin && !ratioMax) {
-      return database('schools').select()
+      return database('schools').select();
     }
-  }
+  };
 
   checkQuery()
     .then((schools) => {
-      return response.status(200).json(schools)
+      return response.status(200).json(schools);
     })
     .catch((error) => {
-      response.status(404).json({error})
+      response.status(404).json({error});
     });
 });
 
@@ -92,70 +92,70 @@ app.get('/api/v1/districts', (request, response) => {
 
   const checkQuery = () => {
     if (countyID) {
-      return database('districts').where('county_id', countyID).select()
+      return database('districts').where('county_id', countyID).select();
     } else {
-      return database('districts').select()
+      return database('districts').select();
     }
-  }
+  };
 
   checkQuery()
-  .then((districts) => {
-    response.status(200).json(districts)
-  })
-  .catch((error) => {
-    response.status(404).json({error})
-  });
+    .then((districts) => {
+      response.status(200).json(districts);
+    })
+    .catch((error) => {
+      response.status(404).json({error});
+    });
 });
 
 app.get('/api/v1/counties', (request, response) => {
   database('counties').select()
-  .then((counties) => {
-    response.status(200).json(counties)
-  })
-  .catch((error) => {
-    response.status(404).json({ error })
-  });
+    .then((counties) => {
+      response.status(200).json(counties);
+    })
+    .catch((error) => {
+      response.status(404).json({ error });
+    });
 });
 
 app.get('/api/v1/counties/:id', (request, response) => {
   const id = request.params.id;
 
   database('counties').where('id', id).select()
-  .then((county) => {
-    response.status(200).json(county)
-  })
-  .catch((error) => {
-    response.status(404).json({
-      error: `Could not find county with id ${request.params.id}`
+    .then((county) => {
+      response.status(200).json(county);
     })
-  });
+    .catch((error) => {
+      response.status(404).json({
+        error: `Could not find county with id ${request.params.id}`
+      });
+    });
 });
 
 app.get('/api/v1/districts/:id', (request, response) => {
   const id = request.params.id;
 
   database('districts').where('id', id).select()
-  .then((county) => {
-    response.status(200).json(county)
-  })
-  .catch((error) => {
-    response.status(404).json({
-      error: `Could not find county with id ${request.params.id}`
+    .then((county) => {
+      response.status(200).json(county);
     })
-  });
+    .catch((error) => {
+      response.status(404).json({
+        error: `Could not find county with id ${request.params.id}`
+      });
+    });
 });
 
 app.get('/api/v1/schools/:id', (request, response) => {
   const id = request.params.id;
 
   database('schools').where('id', id).select()
-  .then((county) => {
-    response.status(200).json(county)
-  })
-  .catch((error) => {
-    response.status(404).json({
-      error: `Could not find county with id ${request.params.id}`
+    .then((county) => {
+      response.status(200).json(county)
     })
+    .catch((error) => {
+      response.status(404).json({
+        error: `Could not find county with id ${request.params.id}`
+    });
   });
 });
 
@@ -166,7 +166,7 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
     if (!school[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <String>, techer_count: <String>, studetn_teacher_ratio: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <String>, techer_count: <String>, studetn_teacher_ratio: <String> }. You're missing a '${requiredParameter}' property.` });
     }
   }
 
@@ -186,7 +186,7 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
   for (let requiredParameter of ['name', 'district_code', 'county_id']) {
     if (!district[requiredParameter]) {
       return response.status(422)
-        .json({ error: `Expected format: { name: <String>, district_code: <String>, county_id: <String> }. You're missing a "${requiredParameter}" property.` });
+        .json({ error: `Expected format: { name: <String>, district_code: <String>, county_id: <String> }. You're missing a '${requiredParameter}' property.` });
     }
   }
 
@@ -209,11 +209,11 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
     if (!school[requiredParameter]) {
       return response
         .status(422)
-        .json({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <Integer>, teacher_count: <Integer>, student_teacher_ratio: <Integer>, district_id: <Integer> }. You're missing a "${requiredParameter}" property.` });
+        .json({ error: `Expected format: { name: <String>, school_code: <String>, student_count: <Integer>, teacher_count: <Integer>, student_teacher_ratio: <Integer>, district_id: <Integer> }. You're missing a '${requiredParameter}' property.` });
     }
   }
 
-  database('schools').where({ id }).update(school, "id")
+  database('schools').where({ id }).update(school, 'id')
   .then(() => {
     response.status(201).json({ id })
   })
