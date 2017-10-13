@@ -1,3 +1,4 @@
+/*eslint-disable */
 app.get('/api/v1/schools', (request, response) => {
   let ratioMin = request.query.ratioMin;
   let ratioMax = request.query.ratioMax;

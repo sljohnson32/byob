@@ -1,3 +1,4 @@
+/*eslint-disable */
 const setJWTs = () => {
   chai.request(server)
     .post('/api/v1/authentication')
