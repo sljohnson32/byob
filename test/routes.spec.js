@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
-const should = chai.should();
+const should = chai.should(); // eslint-disable-line
 const chaiHttp = require('chai-http');
 const server = require('../server');
 
@@ -19,14 +19,14 @@ const setJWTs = () => {
   chai.request(server)
   .post('/api/v1/authentication')
   .send({ email: 'sam@turing.io', appName: 'byob' })
-  .end((error, response) => adminToken = JSON.parse(response.text))
+  .end((error, response) => adminToken = JSON.parse(response.text));
 
 
   chai.request(server)
   .post('/api/v1/authentication')
   .send({ email: 'sam@ricknmorty.com', appName: 'byob' })
-  .end((error, response) => regToken = JSON.parse(response.text))
-}
+  .end((error, response) => regToken = JSON.parse(response.text));
+};
 
 describe('Client Routes', () => {
   it('should return some text from our default page', (done) => {
@@ -35,7 +35,7 @@ describe('Client Routes', () => {
     .end((error, response) => {
       response.should.have.status(200);
       response.should.be.html;
-      response.res.text.should.include('BYOB - School Finder')
+      response.res.text.should.include('BYOB - School Finder');
       done();
     });
   });
@@ -56,10 +56,10 @@ describe('API Routes', () => {
     setJWTs();
     database.migrate.latest()
     .then(() => {
-      done()
+      done();
     })
     .catch((error) => {
-      console.log('error1', error);
+      console.log('Before error: ', error); // eslint-disable-line
     });
   });
 
@@ -67,7 +67,7 @@ describe('API Routes', () => {
     database.seed.run()
     .then(() => done())
     .catch((error) => {
-      console.log('error2', error);
+      console.log('Before each error: ', error);// eslint-disable-line
     });
   });
 
@@ -222,13 +222,12 @@ describe('API Routes', () => {
         done();
       });
     });
-
   });
 
   //post
   describe('POST to the API', () => {
-    let districtBody = { id: 5, name: "Denver 2.0", district_code: "92345", county_id: "1" };
-    let schoolBody = { id: 3, name: "School for the Dans", school_code: "123334", student_count: "2", teacher_count: "1", student_teacher_ratio: ".5", district_id: "1" };
+    let districtBody = { id: 5, name: 'Denver 2.0', district_code: '92345', county_id: '1' };
+    let schoolBody = { id: 3, name: 'School for the Dans', school_code: '123334', student_count: '2', teacher_count: '1', student_teacher_ratio: '.5', district_id: '1' };
 
     it('should be able to add a district', (done) => {
       chai.request(server)
@@ -249,7 +248,7 @@ describe('API Routes', () => {
       .send(districtBody)
       .end((error, response) => {
         response.should.have.status(403);
-        response.body.error.should.equal("Admin priviledges are required to complete this action.");
+        response.body.error.should.equal('Admin priviledges are required to complete this action.');
         done();
       });
     });
@@ -273,7 +272,7 @@ describe('API Routes', () => {
       .send(schoolBody)
       .end((error, response) => {
         response.should.have.status(403);
-        response.body.error.should.equal("Admin priviledges are required to complete this action.");
+        response.body.error.should.equal('Admin priviledges are required to complete this action.');
         done();
       });
     });
@@ -294,8 +293,8 @@ describe('API Routes', () => {
         district_id: '1'
       })
       .end((error, response) => {
-        response.should.have.status(201)
-        response.body.should.have.property('id')
+        response.should.have.status(201);
+        response.body.should.have.property('id');
         response.body.id.should.equal('2');
         done();
       });
@@ -335,7 +334,7 @@ describe('API Routes', () => {
         response.should.have.status(201);
         response.body.should.equal('School with id:2 was updated.');
         done();
-      })
+      });
     });
 
     it('should respond with a 403 if you lack the proper authorization', () => {
@@ -346,7 +345,7 @@ describe('API Routes', () => {
         student_count: '200'
       })
       .end((error, response) => {
-        response.should.have.status(403)
+        response.should.have.status(403);
       });
     });
 

@@ -157,8 +157,8 @@ app.get('/api/v1/schools/:id', (request, response) => {
       if (school.length == 0) {
         return response.status(404).json({
           error: `Could not find school with id ${id}`
-      });
-    } else return response.status(200).json(school)
+        });
+      } else return response.status(200).json(school);
     })
     .catch((error) => {
       response.status(500).json(error);
@@ -178,10 +178,9 @@ app.post('/api/v1/schools', checkAuth, (request, response) => {
 
   database('schools').insert(school, 'id')
     .then(school => {
-      response.status(201).json({ id: school[0] })
+      response.status(201).json({ id: school[0] });
     })
     .catch(error => {
-      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -198,10 +197,9 @@ app.post('/api/v1/districts', checkAuth, (request, response) => {
 
   database('districts').insert(district, 'id')
     .then(school => {
-      response.status(201).json({ id: school[0] })
+      response.status(201).json({ id: school[0] });
     })
     .catch(error => {
-      console.log(error)
       response.status(500).json({ error });
     });
 });
@@ -221,7 +219,7 @@ app.put('/api/v1/schools/:id', checkAuth, (request, response) => {
 
   database('schools').where({ id }).update(school, 'id')
   .then(() => {
-    response.status(201).json({ id })
+    response.status(201).json({ id });
   })
   .catch(error => {
     response.status(500).json(error);
@@ -234,12 +232,12 @@ app.patch('/api/v1/schools/:id', checkAuth, (request, response) => {
 
   database('schools').where('id', id).update(schoolPatch, '*')
   .then(() => {
-    response.status(201).json(`School with id:${id} was updated.`)
+    response.status(201).json(`School with id:${id} was updated.`);
   })
   .catch(error => {
-    response.status(500).json(error)
-  })
-})
+    response.status(500).json(error);
+  });
+});
 
 //delete
 app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
@@ -248,12 +246,12 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   database('schools').where({ id }).del()
   .then(school => {
     if (school) {
-      return response.status(202).json(`School ${id} was deleted from database`)
-    } else return response.status(422).json({ error: 'Not Found' })
+      return response.status(202).json(`School ${id} was deleted from database`);
+    } else return response.status(422).json({ error: 'Not Found' });
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
+    response.status(500).json({ error });
+  });
 });
 
 app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
@@ -262,16 +260,16 @@ app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
   database('districts').where({ id }).del()
   .then(district => {
     if (district) {
-      return response.status(202).json(`District ${id} was deleted from database`)
-    } else return response.status(422).json({ error: 'Not Found' })
+      return response.status(202).json(`District ${id} was deleted from database`);
+    } else return response.status(422).json({ error: 'Not Found' });
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
+    response.status(500).json({ error });
+  });
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`BYOB is running on ${app.get('port')}.`);
+  console.log(`BYOB is running on ${app.get('port')}.`); // eslint-disable-line
 });
 
 module.exports = app;
