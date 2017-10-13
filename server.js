@@ -244,14 +244,14 @@ app.delete('/api/v1/schools/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('schools').where({ id }).del()
-  .then(school => {
-    if (school) {
-      return response.status(202).json(`School ${id} was deleted from database`);
-    } else return response.status(422).json({ error: 'Not Found' });
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(school => {
+      if (school) {
+        return response.status(202).json(`School ${id} was deleted from database`);
+      } else return response.status(422).json({ error: 'Not Found' });
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/districts/:id', checkAuth, (request, response) => {
