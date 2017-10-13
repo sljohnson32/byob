@@ -49,6 +49,7 @@ The server should be running locally.
 
 #### Counties Database Response Example
 The endpoint for the counties database is '/api/v1/counties'. There is no body sent with a GET request. The response should be an array of objects.
+
 ![screen shot 2017-10-12 at 5 20 43 pm](https://user-images.githubusercontent.com/26985984/31523607-c07a836e-af71-11e7-9273-04f8771f58a0.png)
 
 #### Districts Database Response Example
