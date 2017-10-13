@@ -1,14 +1,4 @@
 # byob
-### Pre Reqs
-You should be familiar with [node.js](https://github.com/nodejs/node) as well as [express](https://expressjs.com/). 
-
-You will need to set up migration through [knex](http://knexjs.org/). 
-
-Make sure you are comfortable with [postgres](https://www.postgresql.org/) set up. 
-
-I would reccomend downloading the application for your dashvoard as well as [postico](https://eggerapps.at/postico/) for easy to view databases. 
-
-Lastly you should be comfotable with [postman](https://www.getpostman.com/) which will be a great way to test all your end points.
 
 ### DESCRIPTION
 Welcome to the Colorado Public Schools API!
