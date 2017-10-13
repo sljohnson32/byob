@@ -88,6 +88,12 @@ The endpoint for the districts table is **'/api/v1/districts'**. There is no bod
 #### Schools table
 The endpoint for the schools table is **'/api/v1/schools'**. There is no body required for a GET request.
 
+**Optional Query Parameters**
+
+The schools GET endpoint will accept two query parameters for **rationMin** and **ratioMax** - they can be added individually or together using proper syntax. These query parameters allow the user to select schools with a min and/or max value in the **student_teacher_ratio** column of the table.
+
+Example schools GET requests with query params: ***'/api/v1/schools?ratioMin=3&ratioMax=6'***
+
 **Here is a sample JSON response:**
 
 ![screen shot 2017-10-12 at 5 15 35 pm](https://user-images.githubusercontent.com/26985984/31523479-0bcace60-af71-11e7-9e19-18520d7464f3.png)
