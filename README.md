@@ -1,5 +1,7 @@
 ## BYOB (Build Your Own Backend)
-### API of Colorado Public Schools data build out as full-stack application with Node, Express, Knex, and vanilla JS/jQuery front-end. API docs below!
+### API of Colorado Public Schools data build out as full-stack application with Node, Express, Knex, vanilla JS/jQuery front-end and server-side testing with mocha, chai, and chai-http. 
+
+### API docs below!
 
 ### DESCRIPTION
 Welcome to the Colorado Public Schools API!
