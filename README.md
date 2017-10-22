@@ -112,11 +112,13 @@ A district POST request body must include the following data in JSON:
 - county_id (integer) - foreign key to the counties table
 
 **Sample district POST request body:**
+
 ![screen shot 2017-10-12 at 5 25 58 pm](https://user-images.githubusercontent.com/26985984/31523808-00e3bbcc-af73-11e7-9d1a-8d74e9c34db1.png)
 
 **District POST response example:**
 
 The response will return JSON with the id of the record created.
+
 ![screen shot 2017-10-12 at 5 26 09 pm](https://user-images.githubusercontent.com/26985984/31523836-2b3da108-af73-11e7-8ed7-c44628f37514.png)
 
 
@@ -132,11 +134,13 @@ A school POST request body must include the following data in JSON:
 - district_id (integer) - foreign key to the districts table
 
 **Sample schools POST request body**
+
 ![screen shot 2017-10-12 at 5 44 12 pm](https://user-images.githubusercontent.com/26985984/31524163-187ccc90-af75-11e7-8854-31258b963a73.png)
 
 **School POST response example**
 
 The response will return JSON with the id of the record created.
+
 ![screen shot 2017-10-12 at 5 43 53 pm](https://user-images.githubusercontent.com/26985984/31524162-174e2440-af75-11e7-9b32-a9cb102f5d70.png)
 
 
@@ -160,11 +164,13 @@ A school PUT request must include ***ALL*** of the following:
 - district_id (integer) - foreign key to the districts table
 
 **Sample schools PUT request body**
+
 ![screen shot 2017-10-12 at 6 13 08 pm](https://user-images.githubusercontent.com/26985984/31524790-2a6a014e-af79-11e7-8324-dfb9cbd82a9c.png)
 
 **School POST response example**
 
 The response will return JSON with the id of the record created.
+
 ![screen shot 2017-10-12 at 6 13 19 pm](https://user-images.githubusercontent.com/26985984/31524780-16adfcbe-af79-11e7-9b28-53892f349847.png)
 
 
@@ -188,11 +194,13 @@ A school PUT request must have the id of the school to be updated in the request
 - district_id (integer) - foreign key to the districts table
 
 **Sample schools PATCH request body**
+
 ![screen shot 2017-10-12 at 6 33 18 pm](https://user-images.githubusercontent.com/26985984/31525219-dc84a116-af7b-11e7-87ab-c3fd590d4873.png)
 
 **School PATCH response example**
 
 The response will return JSON with the id of the record created.
+
 ![screen shot 2017-10-12 at 6 33 24 pm](https://user-images.githubusercontent.com/26985984/31525243-12191316-af7c-11e7-82bf-00d7590c166c.png)
 
 
@@ -205,6 +213,7 @@ The end point is **'/api/v1/schools/:id'**
 A school DELETE request must include the id of the school to be deleted as a request parameter.
 
 **Sample schools DELETE response example**
+
 ![screen shot 2017-10-12 at 6 36 36 pm](https://user-images.githubusercontent.com/26985984/31525291-77cae946-af7c-11e7-8aeb-57625819fb1c.png)
 
 #### Districts Database DELETE Response Example
@@ -213,4 +222,5 @@ The end point is **'/api/v1/districts/:id'**
 A Districts DELETE request must include the id of the district to be deleted as a request parameter.
 
 **Sample districts DELETE response example**
+
 ![screen shot 2017-10-12 at 6 41 42 pm](https://user-images.githubusercontent.com/26985984/31525358-06b43be4-af7d-11e7-9e97-f63362af37c1.png)
