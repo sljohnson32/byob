@@ -1,4 +1,5 @@
-# byob
+## BYOB (Build Your Own Backend)
+### API of Colorado Public Schools data build out as full-stack application with Node, Express, Knex, and vanilla JS/jQuery front-end. API docs below!
 
 ### DESCRIPTION
 Welcome to the Colorado Public Schools API!
@@ -54,7 +55,7 @@ The third table is the schools table. The schools table has the following column
 ### AUTHENTICATION
 In order to use the POST, PUT, PATCH and DELETE endpoints, you must provide a JWT to authenticate.  We suggest using best practice and including authentication in the Header but this API can also manage authentication in the body and as a query parameter.
 
-To receive a JWT, please visit our website here: https://sj-da-byob.herokuapp.com/.
+To receive a JWT, please visit our website here: https://sj-da-byob.herokuapp.com.
 
 #### Example JWT
 ![screen shot 2017-10-12 at 4 29 48 pm](https://user-images.githubusercontent.com/26985984/31522474-22e68720-af6b-11e7-81c1-f64085a4d754.png)
@@ -62,7 +63,7 @@ To receive a JWT, please visit our website here: https://sj-da-byob.herokuapp.co
 ***
 
 ### API ENDPOINTS
-All endpoints can be accessed using the root https://sj-da-byob.herokuapp.com/
+All endpoints can be accessed using the root https://sj-da-byob.herokuapp.com
 
 - All endpoints will return data as JSON
 - GET endpoints do not require authentication
@@ -104,7 +105,7 @@ Example schools GET requests with query params: ***'/api/v1/schools?ratioMin=3&r
 If the JSON Web Token verifies the user to be an admin, they can add a new district or school to their respective tables.
 
 #### Districts POST
-The end point is **'/api/v1/districts/'**.
+The end point is **'/api/v1/districts'**.
 
 A district POST request body must include the following data in JSON:
 - name
@@ -123,7 +124,7 @@ The response will return JSON with the id of the record created.
 
 
 #### Schools POST
-The end point is **'/api/v1/schools/'**
+The end point is **'/api/v1/schools'**
 
 A school POST request body must include the following data in JSON:
 - name (string)
